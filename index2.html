@@ -1,0 +1,599 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Iowa Rural Justice Project</title>
+  <link rel="icon" type="image/jpg" href="images/icon.jpg" />
+  <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.10.2/css/all.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.10.2/css/v4-shims.css">
+
+
+  <link href='https://api.mapbox.com/mapbox-assembly/v0.8.0/assembly.min.css' rel='stylesheet'>
+  <link href='https://api.mapbox.com/mapbox.js/v3.2.1/mapbox.css' rel='stylesheet' />
+  <link href="https://fonts.googleapis.com/css?family=Rubik&display=swap" rel="stylesheet">
+
+  <!--leaflet tag filter buttons from: https://github.com/maydemirx/leaflet-tag-filter-button-->
+  <link rel="stylesheet" href="src/leaflet-tag-filter-button.css">
+  <link rel="stylesheet" href="src/easy-button.css">
+
+  <style type="text/css">
+    h1 {
+      font-size: 30px;
+      font-family: 'Rubik', sans-serif;
+      display: inline-block;
+      color: white;
+      margin-left: 18px;
+      margin-right: 30px;
+      padding-top: 20px;
+      padding-bottom: 10px;
+    }
+
+    h2 {
+      font-size: 14px;
+      font-family: 'Rubik', sans-serif;
+      padding-bottom: 0px;
+    }
+
+    h3 {
+      font-size: 5px;
+      font-family: 'Rubik', sans-serif;
+      padding-top: 0px;
+    }
+
+    h4 {
+      font-size: 14px;
+      font-family: 'Rubik', sans-serif;
+      display: inline-block;
+      margin-right: 16px;
+      margin-left: 19px;
+      padding-bottom: 1px;
+      color: white;
+    }
+
+    body {
+      margin: 0px;
+      height: 100%;
+      width: 100%;
+    }
+
+    /* Add banner to header background */
+    header {
+      background-image: url('images/Iowa_Prairie.jpg');
+      position: fixed;
+      width: 100%;
+      height: 100px;
+      background-color: #000000;
+      box-shadow: 0px 5px 5px black;
+      z-index: 800;
+    }
+
+    /* Set map parameters */
+    #map {
+      position: fixed;
+      top: 100px;
+      bottom: 0px;
+      width: 100%;
+    }
+
+    #info_text {
+      background-color: #FFFFFF;
+      padding-bottom: 10px;
+      padding-left: 5px;
+      height: 30px;
+      box-shadow: 0px 0px 0px 2px rgba(0, 0, 0, 0.3);
+      position: absolute;
+      top: 67px;
+      right: 125px;
+    }
+
+    #new_text {
+      background-color: #FFFFFF;
+      padding-bottom: 10px;
+      padding-left: 5px;
+      height: 30px;
+      box-shadow: 0px 0px 0px 2px rgba(0,0,0,0.3);
+    }
+
+    #map1button {
+      box-shadow: 0px 0px 0px 2px rgba(0, 0, 0, 0.3);
+      position: fixed;
+      z-index: 1000;
+      top: 177px;
+      right: 92px;
+    }
+
+    .legend {
+      background-color: #fff;
+      border-radius: 3px;
+      bottom: 30px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.10);
+      font: 12px/20px 'Rubik', 'Rubik', 'Rubik', sans-serif;
+      padding: 10px;
+      position: absolute;
+      right: 10px;
+      z-index: 1;
+      line-height: 18px;
+      color: #555;
+    }
+
+    .legend i {
+      width: 50px;
+      height: 18px;
+      float: left;
+      margin-right: 25px;
+      opacity: 0.7;
+    }
+
+    .leaflet-control-layers-expanded {
+      font-family: 'Rubik', sans-serif;
+    }
+
+    .easy-button-button {
+      display: block !important;
+    }
+
+    .tag-filter-tags-container {
+      left: 30px;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>Iowa Rural Justice Project: Attorneys by Zip Code</h1><br>
+    <h4>Map by Jay Bowen (2020), University of Iowa Digital Scholarship & Publishing Studio</a></h4>
+  </header>
+  <div id="map"></div>
+
+  <!-- maps title -->
+  <div id='info_text' class='py3 px12 round wmax200'>
+    <h2 class='txt-bold'>Maps:</h2>
+  </div>
+  <!-- end maps title -->
+
+  <!-- filters title -->
+  <div id='new_text' class='py3 px12 round top left wmax200'>
+    <h2 class='txt-bold'>Filters:</h2>
+  </div>
+  <!-- end filters title -->
+
+  <!-- load scripts -->
+  <script src='https://api.mapbox.com/mapbox-assembly/v0.8.0/assembly.js'></script>
+  <script src='https://api.mapbox.com/mapbox.js/v3.2.1/mapbox.js'></script>
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-sparklines/2.1.2/jquery.sparkline.min.js"></script>
+
+  <script src="src/easy-button.js"></script>
+  <script src="src/leaflet-tag-filter-button.js"></script>
+
+  <script type="text/javascript">
+    // Initialize the map
+    var map = L.map('map',{zoomControl: false}).setView([42.05, -93.5], 8);
+
+    L.tileLayer('https://tile.thunderforest.com/neighbourhood/{z}/{x}/{y}.png?apikey=dd2dca516d114fd89c0b1403358cbfa8', {
+      attribution: '&copy; <a href="http://www.thunderforest.com/">Thunderforest</a>, &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      apikey: '<dd2dca516d114fd89c0b1403358cbfa8>',
+      maxZoom: 18,
+      minZoom: 6,
+    }).addTo(map);
+
+    // fit map to Iowa
+    map.fitBounds([
+      [43.50102, -90.14006],
+      [40.37544, -96.63967]
+    ]);
+
+    // add a scale bar
+    L.control.scale().addTo(map); // Initialize the map
+
+    // Add a function to style the zip codes by their attorney counts (jenks)
+    function getColor(d) {
+      return d > 422.00 ? '#8c2d04' :
+        d > 161.00 ? '#cc4c02' :
+        d > 83.00 ? '#ec7014' :
+        d > 47.00 ? '#fe9929' :
+        d > 24.00 ? '#fec44f' :
+        d > 9.00 ? '#fee391' :
+        d > 0.00 ? '#ffffd4' :
+        '#1C00ff00';
+    };
+
+    // Add a function to style the zip codes by attorneys per thousand people (jenks)
+    function getShade(d) {
+      return d > 129.88 ? '#0c2c84' :
+        d > 78.80 ? '#225ea8' :
+        d > 13.69 ? '#1d91c0' :
+        d > 6.38 ? '#41b6c4' :
+        d > 1.98 ? '#7fcdbb' :
+        d > 0.62 ? '#c7e9b4' :
+        d > 0.00 ? '#ffffcc' :
+        '#1C00ff00';
+    };
+
+    // load the data asynchronously
+    // zip codes polygon from: https://www.arcgis.com/home/item.html?id=8d2012a2016e484dafaac0451f9aea24
+    d3.queue()
+      .defer(d3.json, 'data/Attys_by_Zip.geojson')
+      .await(drawMap); // load the data asynchronously
+
+    // define drawMap function
+    function drawMap(err, zips) {
+
+      var zipCodes = L.geoJson(zips, {
+
+        // style the layer
+        style: function(feature) {
+
+          var tags = [];
+
+          tags.push(feature.properties.PO_NAME);
+          tags.push("Zip Code: " + feature.properties.ZIP_CODE);
+
+          return {
+            stroke: 0.5,
+            color: 'grey',
+            strokeOpacity: 0.75,
+            weight: 0.5,
+            fillColor: getColor(feature.properties.Count),
+            fillOpacity: 0.75,
+            tags: tags //define the tags with the tags array
+          };
+        },
+
+        onEachFeature: function(feature, layer) {
+          // bind a popup window
+          layer.bindPopup('<h2><b>Zip Code: ' + feature.properties.Zip + '<br>' + 'Community: ' + feature.properties.PO_NAME + '<br>' + 'Attorneys: ' + feature.properties.Count + '</b></h2>' + feature.properties.popup, {
+            maxHeight: 300,
+            minWidth: 250,
+            maxWidth: 300,
+          });
+          // change layer style on mouseover
+          layer.on("mouseover", function(e) {
+            layer.setStyle({
+              color: '#3232FF',
+              weight: 3,
+              opacity: 0.5
+            });
+          });
+          // reset style on mouseout
+          layer.on("mouseout", function(e) {
+            zipCodes.resetStyle(e.target);
+          });
+
+        }
+
+      }).addTo(map); // add the layer to the map
+
+      var attysThds = L.geoJson(zips, {
+
+        // style the layer
+        style: function(feature) {
+
+          var tags = [];
+
+          tags.push(feature.properties.PO_NAME);
+          tags.push("Zip Code: " + feature.properties.ZIP_CODE);
+
+          return {
+            stroke: 0.5,
+            color: 'grey',
+            strokeOpacity: 0.75,
+            weight: 0.5,
+            fillColor: getShade(feature.properties.Attys_perThousand),
+            fillOpacity: 0.75,
+            tags: tags //define the tags with the tags array
+          };
+        },
+
+        onEachFeature: function(feature, layer) {
+          // bind a popup window
+          layer.bindPopup('<h2><b>Zip Code: ' + feature.properties.Zip + '<br>' + 'Community: ' + feature.properties.PO_NAME + '<br>' + 'Attorneys/1000 People: ' + feature.properties.Attys_perThousand + '</b></h2>' + feature.properties.popup, {
+            maxHeight: 300,
+            minWidth: 250,
+            maxWidth: 300,
+          });
+          // change layer style on mouseover
+          layer.on("mouseover", function(e) {
+            layer.setStyle({
+              color: '#3232FF',
+              weight: 3,
+              opacity: 0.5
+            });
+          });
+          // reset style on mouseout
+          layer.on("mouseout", function(e) {
+            attysThds.resetStyle(e.target);
+          });
+
+        }
+
+      });
+
+      // designate the layers as baselayers (allows only one open at a time)
+      var baselayers = {
+        "Attorneys by Zip Code": zipCodes,
+        "Attorneys per 1,000 People": attysThds
+      };
+
+      // all done with the layers, add them to layer control
+      L.control.layers(baselayers, null, {
+        collapsed: false,
+      }).addTo(map);
+
+      // create legends for both layers
+      var zipLegend = L.control({
+        position: 'bottomright'
+      });
+
+      var thdsLegend = L.control({
+        position: 'bottomright'
+      });
+
+      var filtersTitle = L.control({
+        position: 'topleft' //place the maps window at top left corner
+      });
+
+      //when added to the map
+      filtersTitle.onAdd = function(map) {
+
+        var div = L.DomUtil.get("new_text"); //get the style settings
+
+        return div; //return the style settings
+
+      }
+
+      filtersTitle.addTo(map); //add the filter window to the map
+
+      //add filter button for:
+      //communities
+      L.control.tagFilterButton({
+        data: ['Ackley', 'Ackworth', 'Adair', 'Adel', 'Afton', 'Agency', 'Ainsworth', 'Akron', 'Albert City', 'Albia', 'Albion', 'Alburnett', 'Alden', 'Alexander', 'Algona', 'Alleman', 'Allerton', 'Allison', 'Alta', 'Alta Vista', 'Alton',
+          'Altoona', 'Alvord', 'Amana', 'Ames', 'Anamosa', 'Anita', 'Ankeny', 'Anthon', 'Aplington', 'Arcadia', 'Archer', 'Aredale', 'Argyle', 'Arion', 'Arlington', 'Armstrong', 'Arnolds Park', 'Arthur', 'Ashton', 'Aspinwall', 'Atalissa',
+          'Atkins', 'Atlantic', 'Auburn', 'Audubon', 'Aurelia', 'Aurora', 'Austinville', 'Avoca', 'Ayrshire', 'Badger', 'Bagley', 'Baldwin', 'Bancroft', 'Barnes City', 'Barnum', 'Batavia', 'Battle Creek', 'Baxter', 'Bayard', 'Beacon', 'Beaman',
+          'Beaver', 'Bedford', 'Belle Plaine', 'Bellevue', 'Belmond', 'Bennett', 'Benton', 'Bernard', 'Berwick', 'Bettendorf', 'Bevington', 'Birmingham', 'Blairsburg', 'Blairstown', 'Blakesburg', 'Blanchard', 'Blencoe', 'Blockton',
+          'Bloomfield', 'Blue Grass', 'Bode', 'Bonaparte', 'Bondurant', 'Boone', 'Booneville', 'Bouton', 'Boxholm', 'Boyden', 'Braddyville', 'Bradford', 'Bradgate', 'Brandon', 'Brayton', 'Breda', 'Bridgewater', 'Brighton', 'Bristow', 'Britt',
+          'Bronson', 'Brooklyn', 'Bryant', 'Buckingham', 'Buffalo', 'Buffalo Center', 'Burlington', 'Burt', 'Bussey', 'Calamus', 'Callender', 'Calmar', 'Calumet', 'Camanche', 'Cambridge', 'Cantril', 'Carbon', 'Carlisle', 'Carpenter', 'Carroll',
+          'Carson', 'Carter Lake', 'Cascade', 'Casey', 'Castalia', 'Castana', 'Cedar', 'Cedar Falls', 'Cedar Rapids', 'Center Junction', 'Center Point', 'Centerville', 'Central City', 'Chariton', 'Charles City', 'Charlotte', 'Charter Oak',
+          'Chatsworth', 'Chelsea', 'Cherokee', 'Chester', 'Chillicothe', 'Churdan', 'Cincinnati', 'Clare', 'Clarence', 'Clarinda', 'Clarion', 'Clarksville', 'Clear Lake', 'Clearfield', 'Cleghorn', 'Clemons', 'Clermont', 'Clinton', 'Clio',
+          'Clive', 'Clutier', 'Coggon', 'Coin', 'Colesburg', 'Colfax', 'College Springs', 'Collins', 'Colo', 'Columbia', 'Columbus City', 'Columbus Junction', 'Colwell', 'Conesville', 'Conrad', 'Conroy', 'Coon Rapids', 'Cooper', 'Coralville',
+          'Corning', 'Correctionville', 'Corwith', 'Corydon', 'Council Bluffs', 'Crawfordsville', 'Crescent', 'Cresco', 'Creston', 'Cromwell', 'Crystal Lake', 'Cumberland', 'Cumming', 'Curlew', 'Cushing', 'Cylinder', 'Dakota City',
+          'Dallas Center', 'Dana', 'Danbury', 'Danville', 'Davenport', 'Davis City', 'Dawson', 'Dayton', 'De Soto', 'De Witt', 'Decatur', 'Decorah', 'Dedham', 'Deep River', 'Defiance', 'Delaware', 'Delhi', 'Delmar', 'Deloit', 'Delta',
+          'Denison', 'Denmark', 'Denver', 'Derby', 'Des Moines', 'Dewar', 'Dexter', 'Diagonal', 'Dickens', 'Dike', 'Dixon', 'Dolliver', 'Donahue', 'Donnellson', 'Doon', 'Dorchester', 'Douds', 'Dougherty', 'Dow City', 'Dows', 'Drakesville',
+          'Dubuque', 'Dumont', 'Duncombe', 'Dundee', 'Dunkerton', 'Dunlap', 'Durango', 'Durant', 'Dyersville', 'Dysart', 'Eagle Grove', 'Earlham', 'Earling', 'Earlville', 'Early', 'Eddyville', 'Edgewood', 'Elberon', 'Eldon', 'Eldora',
+          'Eldridge', 'Elgin', 'Elk Horn', 'Elkader', 'Elkhart', 'Elkport', 'Elliott', 'Ellston', 'Ellsworth', 'Elma', 'Ely', 'Emerson', 'Emmetsburg', 'Epworth', 'Essex', 'Estherville', 'Evansdale', 'Everly', 'Exira', 'Exline', 'Fairbank',
+          'Fairfax', 'Fairfield', 'Farley', 'Farmersburg', 'Farmington', 'Farnhamville', 'Farragut', 'Fayette', 'Fenton', 'Fertile', 'Floris', 'Floyd', 'Fonda', 'Fontanelle', 'Forest City', 'Fort Atkinson', 'Fort Dodge', 'Fort Madison',
+          'Fredericksburg', 'Fremont', 'Fruitland', 'Galt', 'Galva', 'Garber', 'Garden Grove', 'Garnavillo', 'Garner', 'Garrison', 'Garwin', 'Geneva', 'George', 'Gibson', 'Gilbert', 'Gilbertville', 'Gilman', 'Gilmore City', 'Gladbrook',
+          'Glenwood', 'Glidden', 'Goldfield', 'Goodell', 'Goose Lake', 'Gowrie', 'Graettinger', 'Grafton', 'Grand Junction', 'Grand Mound', 'Grand River', 'Granger', 'Grant', 'Granville', 'Gravity', 'Gray', 'Greeley', 'Greene', 'Greenfield',
+          'Greenville', 'Grimes', 'Grinnell', 'Griswold', 'Grundy Center', 'Guernsey', 'Guthrie Center', 'Guttenberg', 'Halbur', 'Hamburg', 'Hamilton', 'Hamlin', 'Hampton', 'Hancock', 'Hanlontown', 'Harcourt', 'Hardy', 'Harlan', 'Harper',
+          'Harpers Ferry', 'Harris', 'Hartford', 'Hartley', 'Hartwick', 'Harvey', 'Hastings', 'Havelock', 'Haverhill', 'Hawarden', 'Hawkeye', 'Hazleton', 'Hedrick', 'Henderson', 'Hiawatha', 'Hills', 'Hillsboro', 'Hinton', 'Holland', 'Holstein',
+          'Holy Cross', 'Homestead', 'Honey Creek', 'Hopkinton', 'Hornick', 'Hospers', 'Hubbard', 'Hudson', 'Hull', 'Humboldt', 'Humeston', 'Huxley', 'Ida Grove', 'Imogene', 'Independence', 'Indianola', 'Inwood', 'Ionia', 'Iowa City',
+          'Iowa Falls', 'Ira', 'Ireton', 'Irwin', 'Jamaica', 'Janesville', 'Jefferson', 'Jesup', 'Jewell', 'Johnston', 'Joice', 'Jolley', 'Kalona', 'Kamrar', 'Kanawha', 'Kellerton', 'Kelley', 'Kellogg', 'Kensett', 'Keokuk', 'Keosauqua',
+          'Keota', 'Kesley', 'Keswick', 'Keystone', 'Kimballton', 'Kingsley', 'Kirkman', 'Kirkville', 'Kiron', 'Klemme', 'Knoxville', 'La Motte', 'La Porte City', 'Lacona', 'Ladora', 'Lake City', 'Lake Mills', 'Lake Park', 'Lake View',
+          'Lakota', 'Lamoni', 'Lamont', 'Langworthy', 'Lansing', 'Larchwood', 'Larrabee', 'Latimer', 'Laurel', 'Laurens', 'Lawler', 'Lawton', 'Le Claire', 'Le Grand', 'Le Mars', 'Ledyard', 'Lehigh', 'Leighton', 'Leland', 'Lenox', 'Leon',
+          'Lester', 'Letts', 'Lewis', 'Libertyville', 'Lime Springs', 'Linden', 'Lineville', 'Linn Grove', 'Lisbon', 'Liscomb', 'Little Cedar', 'Little Rock', 'Little Sioux', 'Livermore', 'Lockridge', 'Logan', 'Lohrville', 'Lone Rock',
+          'Lone Tree', 'Long Grove', 'Lorimor', 'Lost Nation', 'Lovilia', 'Lowden', 'Lu Verne', 'Luana', 'Lucas', 'Luther', 'Luzerne', 'Lynnville', 'Lytton', 'Macedonia', 'Macksburg', 'Madrid', 'Magnolia', 'Malcom', 'Mallard', 'Malvern',
+          'Manchester', 'Manilla', 'Manly', 'Manning', 'Manson', 'Mapleton', 'Maquoketa', 'Marathon', 'Marble Rock', 'Marcus', 'Marengo', 'Marion', 'Marne', 'Marquette', 'Marshalltown', 'Martelle', 'Martensdale', 'Mason City', 'Masonville',
+          'Massena', 'Matlock', 'Maurice', 'Maxwell', 'Maynard', 'Mc Callsburg', 'Mc Causland', 'Mc Clelland', 'Mc Gregor', 'Mc Intire', 'Mechanicsville', 'Mediapolis', 'Melbourne', 'Melcher Dallas', 'Melrose', 'Melvin', 'Menlo', 'Meriden',
+          'Merrill', 'Meservey', 'Middle Amana', 'Middletown', 'Miles', 'Milford', 'Millerton', 'Milo', 'Milton', 'Minburn', 'Minden', 'Mineola', 'Mingo', 'Missouri Valley', 'Mitchellville', 'Modale', 'Mondamin', 'Monmouth', 'Monona', 'Monroe',
+          'Montezuma', 'Monticello', 'Montour', 'Montpelier', 'Montrose', 'Moorhead', 'Moorland', 'Moravia', 'Morley', 'Morning Sun', 'Morrison', 'Moscow', 'Moulton', 'Mount Auburn', 'Mount Ayr', 'Mount Pleasant', 'Mount Sterling',
+          'Mount Union', 'Mount Vernon', 'Moville', 'Murray', 'Muscatine', 'Mystic', 'Nashua', 'Nemaha', 'Neola', 'Nevada', 'New Albin', 'New Hampton', 'New Hartford', 'New Liberty', 'New London', 'New Market', 'New Providence', 'New Sharon',
+          'New Vienna', 'New Virginia', 'Newell', 'Newhall', 'Newton', 'Nichols', 'Nodaway', 'Nora Springs', 'North Buena Vista', 'North English', 'North Liberty', 'Northboro', 'Northwood', 'Norwalk', 'Norway', 'Oakland', 'Oakville',
+          'Ocheyedan', 'Odebolt', 'Oelwein', 'Ogden', 'Okoboji', 'Olin', 'Ollie', 'Onawa', 'Onslow', 'Oran', 'Orange City', 'Orchard', 'Orient', 'Osage', 'Osceola', 'Oskaloosa', 'Ossian', 'Otho', 'Otley', 'Oto', 'Ottosen', 'Ottumwa', 'Oxford',
+          'Oxford Junction', 'Pacific Junction', 'Packwood', 'Palmer', 'Palo', 'Panama', 'Panora', 'Parkersburg', 'Parnell', 'Paton', 'Patterson', 'Paullina', 'Pella', 'Peosta', 'Percival', 'Perry', 'Persia', 'Peru', 'Peterson', 'Pierson',
+          'Pilot Mound', 'Pisgah', 'Plainfield', 'Plano', 'Pleasant Hill', 'Pleasantville', 'Plymouth', 'Pocahontas', 'Polk City', 'Pomeroy', 'Popejoy', 'Portsmouth', 'Postville', 'Prairie City', 'Prairieburg', 'Prescott', 'Preston',
+          'Primghar', 'Princeton', 'Prole', 'Promise City', 'Protivin', 'Pulaski', 'Quasqueton', 'Quimby', 'Radcliffe', 'Randalia', 'Randall', 'Randolph', 'Raymond', 'Readlyn', 'Reasnor', 'Red Oak', 'Redding', 'Redfield', 'Reinbeck',
+          'Rembrandt', 'Remsen', 'Renwick', 'Rhodes', 'Riceville', 'Richland', 'Ridgeway', 'Ringsted', 'Rippey', 'Riverside', 'Riverton', 'Robins', 'Rock Falls', 'Rock Rapids', 'Rock Valley', 'Rockford', 'Rockwell', 'Rockwell City', 'Rodney',
+          'Roland', 'Rolfe', 'Rose Hill', 'Rowan', 'Rowley', 'Royal', 'Rudd', 'Runnells', 'Russell', 'Ruthven', 'Rutland', 'Ryan', 'Sabula', 'Sac City', 'Saint Ansgar', 'Saint Anthony', 'Saint Charles', 'Saint Marys', 'Saint Olaf',
+          'Saint Paul', 'Salem', 'Salix', 'Sanborn', 'Scarville', 'Schaller', 'Schleswig', 'Scranton', 'Searsboro', 'Selma', 'Sergeant Bluff', 'Seymour', 'Shannon City', 'Sharpsburg', 'Sheffield', 'Shelby', 'Sheldahl', 'Sheldon', 'Shell Rock',
+          'Shellsburg', 'Shenandoah', 'Sherrill', 'Sibley', 'Sidney', 'Sigourney', 'Silver City', 'Sioux Center', 'Sioux City', 'Sioux Rapids', 'Slater', 'Sloan', 'Smithland', 'Soldier', 'Solon', 'Somers', 'South Amana', 'South English',
+          'Spencer', 'Sperry', 'Spirit Lake', 'Spragueville', 'Springville', 'Stacyville', 'Stanhope', 'Stanley', 'Stanton', 'Stanwood', 'State Center', 'Steamboat Rock', 'Stockport', 'Stockton', 'Storm Lake', 'Story City', 'Stratford',
+          'Strawberry Point', 'Stuart', 'Sully', 'Sumner', 'Superior', 'Sutherland', 'Swaledale', 'Swan', 'Swea City', 'Swisher', 'Tabor', 'Tama', 'Templeton', 'Terril', 'Thayer', 'Thompson', 'Thor', 'Thornton', 'Thurman', 'Tiffin', 'Tingley',
+          'Tipton', 'Titonka', 'Toddville', 'Toeterville', 'Toledo', 'Tracy', 'Traer', 'Treynor', 'Tripoli', 'Truro', 'Udell', 'Underwood', 'Union', 'Unionville', 'Urbana', 'Urbandale', 'Ute', 'Vail', 'Van Horne', 'Van Meter', 'Van Wert',
+          'Ventura', 'Victor', 'Villisca', 'Vincent', 'Vining', 'Vinton', 'Volga', 'Wadena', 'Walcott', 'Walford', 'Walker', 'Wall Lake', 'Wallingford', 'Walnut', 'Wapello', 'Washington', 'Washta', 'Waterloo', 'Waterville', 'Watkins',
+          'Waucoma', 'Waukee', 'Waukon', 'Waverly', 'Wayland', 'Webb', 'Webster', 'Webster City', 'Weldon', 'Wellman', 'Wellsburg', 'Wesley', 'West Bend', 'West Branch', 'West Burlington', 'West Chester', 'West des Moines', 'West Liberty',
+          'West Point', 'West Union', 'Westfield', 'Westgate', 'Westphalia', 'Westside', 'Wever', 'What Cheer', 'Wheatland', 'Whiting', 'Whittemore', 'Whitten', 'Williams', 'Williamsburg', 'Williamson', 'Wilton', 'Windsor Heights', 'Winfield',
+          'Winterset', 'Winthrop', 'Wiota', 'Woden', 'Woodbine', 'Woodburn', 'Woodward', 'Woolstock', 'Worthington', 'Wyoming', 'Yale', 'Yarmouth', 'Yorktown', 'Zearing', 'Zwingle'
+        ],
+        filterOnEveryClick: true,
+        icon: '<i class="fas fa-map-marked-alt"></i>',
+      }).addTo(map);
+
+      //add filter button for:
+      //zip codes
+      L.control.tagFilterButton({
+        data: ['Zip Code: 50001', 'Zip Code: 50002', 'Zip Code: 50003', 'Zip Code: 50005', 'Zip Code: 50006', 'Zip Code: 50007', 'Zip Code: 50008', 'Zip Code: 50009', 'Zip Code: 50010', 'Zip Code: 50011', 'Zip Code: 50012', 'Zip Code: 50013',
+          'Zip Code: 50014', 'Zip Code: 50020', 'Zip Code: 50021', 'Zip Code: 50022', 'Zip Code: 50023', 'Zip Code: 50025', 'Zip Code: 50026', 'Zip Code: 50027', 'Zip Code: 50028', 'Zip Code: 50029', 'Zip Code: 50031', 'Zip Code: 50032',
+          'Zip Code: 50033', 'Zip Code: 50034', 'Zip Code: 50035', 'Zip Code: 50036', 'Zip Code: 50038', 'Zip Code: 50039', 'Zip Code: 50040', 'Zip Code: 50041', 'Zip Code: 50042', 'Zip Code: 50044', 'Zip Code: 50046', 'Zip Code: 50047',
+          'Zip Code: 50048', 'Zip Code: 50049', 'Zip Code: 50050', 'Zip Code: 50051', 'Zip Code: 50052', 'Zip Code: 50054', 'Zip Code: 50055', 'Zip Code: 50056', 'Zip Code: 50057', 'Zip Code: 50058', 'Zip Code: 50059', 'Zip Code: 50060',
+          'Zip Code: 50061', 'Zip Code: 50062', 'Zip Code: 50063', 'Zip Code: 50064', 'Zip Code: 50065', 'Zip Code: 50066', 'Zip Code: 50067', 'Zip Code: 50068', 'Zip Code: 50069', 'Zip Code: 50070', 'Zip Code: 50071', 'Zip Code: 50072',
+          'Zip Code: 50073', 'Zip Code: 50074', 'Zip Code: 50075', 'Zip Code: 50076', 'Zip Code: 50101', 'Zip Code: 50103', 'Zip Code: 50104', 'Zip Code: 50105', 'Zip Code: 50106', 'Zip Code: 50107', 'Zip Code: 50108', 'Zip Code: 50109',
+          'Zip Code: 50110', 'Zip Code: 50111', 'Zip Code: 50112', 'Zip Code: 50115', 'Zip Code: 50116', 'Zip Code: 50117', 'Zip Code: 50118', 'Zip Code: 50119', 'Zip Code: 50120', 'Zip Code: 50122', 'Zip Code: 50123', 'Zip Code: 50124',
+          'Zip Code: 50125', 'Zip Code: 50126', 'Zip Code: 50127', 'Zip Code: 50128', 'Zip Code: 50129', 'Zip Code: 50130', 'Zip Code: 50131', 'Zip Code: 50132', 'Zip Code: 50133', 'Zip Code: 50134', 'Zip Code: 50135', 'Zip Code: 50136',
+          'Zip Code: 50138', 'Zip Code: 50139', 'Zip Code: 50140', 'Zip Code: 50141', 'Zip Code: 50142', 'Zip Code: 50143', 'Zip Code: 50144', 'Zip Code: 50146', 'Zip Code: 50147', 'Zip Code: 50148', 'Zip Code: 50149', 'Zip Code: 50150',
+          'Zip Code: 50151', 'Zip Code: 50152', 'Zip Code: 50153', 'Zip Code: 50154', 'Zip Code: 50155', 'Zip Code: 50156', 'Zip Code: 50157', 'Zip Code: 50158', 'Zip Code: 50160', 'Zip Code: 50161', 'Zip Code: 50162', 'Zip Code: 50163',
+          'Zip Code: 50164', 'Zip Code: 50165', 'Zip Code: 50166', 'Zip Code: 50167', 'Zip Code: 50168', 'Zip Code: 50169', 'Zip Code: 50170', 'Zip Code: 50171', 'Zip Code: 50173', 'Zip Code: 50174', 'Zip Code: 50201', 'Zip Code: 50206',
+          'Zip Code: 50207', 'Zip Code: 50208', 'Zip Code: 50210', 'Zip Code: 50211', 'Zip Code: 50212', 'Zip Code: 50213', 'Zip Code: 50214', 'Zip Code: 50216', 'Zip Code: 50217', 'Zip Code: 50218', 'Zip Code: 50219', 'Zip Code: 50220',
+          'Zip Code: 50222', 'Zip Code: 50223', 'Zip Code: 50225', 'Zip Code: 50226', 'Zip Code: 50227', 'Zip Code: 50228', 'Zip Code: 50229', 'Zip Code: 50230', 'Zip Code: 50231', 'Zip Code: 50232', 'Zip Code: 50233', 'Zip Code: 50234',
+          'Zip Code: 50235', 'Zip Code: 50236', 'Zip Code: 50237', 'Zip Code: 50238', 'Zip Code: 50239', 'Zip Code: 50240', 'Zip Code: 50241', 'Zip Code: 50242', 'Zip Code: 50243', 'Zip Code: 50244', 'Zip Code: 50246', 'Zip Code: 50247',
+          'Zip Code: 50248', 'Zip Code: 50249', 'Zip Code: 50250', 'Zip Code: 50251', 'Zip Code: 50252', 'Zip Code: 50254', 'Zip Code: 50256', 'Zip Code: 50257', 'Zip Code: 50258', 'Zip Code: 50261', 'Zip Code: 50262', 'Zip Code: 50263',
+          'Zip Code: 50264', 'Zip Code: 50265', 'Zip Code: 50266', 'Zip Code: 50268', 'Zip Code: 50269', 'Zip Code: 50271', 'Zip Code: 50272', 'Zip Code: 50273', 'Zip Code: 50274', 'Zip Code: 50275', 'Zip Code: 50276', 'Zip Code: 50277',
+          'Zip Code: 50278', 'Zip Code: 50309', 'Zip Code: 50310', 'Zip Code: 50311', 'Zip Code: 50312', 'Zip Code: 50313', 'Zip Code: 50314', 'Zip Code: 50315', 'Zip Code: 50316', 'Zip Code: 50317', 'Zip Code: 50319', 'Zip Code: 50320',
+          'Zip Code: 50321', 'Zip Code: 50322', 'Zip Code: 50323', 'Zip Code: 50324', 'Zip Code: 50325', 'Zip Code: 50327', 'Zip Code: 50401', 'Zip Code: 50420', 'Zip Code: 50421', 'Zip Code: 50423', 'Zip Code: 50424', 'Zip Code: 50426',
+          'Zip Code: 50428', 'Zip Code: 50430', 'Zip Code: 50432', 'Zip Code: 50433', 'Zip Code: 50434', 'Zip Code: 50435', 'Zip Code: 50436', 'Zip Code: 50438', 'Zip Code: 50439', 'Zip Code: 50440', 'Zip Code: 50441', 'Zip Code: 50444',
+          'Zip Code: 50446', 'Zip Code: 50447', 'Zip Code: 50448', 'Zip Code: 50449', 'Zip Code: 50450', 'Zip Code: 50451', 'Zip Code: 50452', 'Zip Code: 50453', 'Zip Code: 50454', 'Zip Code: 50455', 'Zip Code: 50456', 'Zip Code: 50457',
+          'Zip Code: 50458', 'Zip Code: 50459', 'Zip Code: 50460', 'Zip Code: 50461', 'Zip Code: 50464', 'Zip Code: 50466', 'Zip Code: 50467', 'Zip Code: 50468', 'Zip Code: 50469', 'Zip Code: 50470', 'Zip Code: 50471', 'Zip Code: 50472',
+          'Zip Code: 50473', 'Zip Code: 50475', 'Zip Code: 50476', 'Zip Code: 50477', 'Zip Code: 50478', 'Zip Code: 50479', 'Zip Code: 50480', 'Zip Code: 50481', 'Zip Code: 50482', 'Zip Code: 50483', 'Zip Code: 50484', 'Zip Code: 50501',
+          'Zip Code: 50510', 'Zip Code: 50511', 'Zip Code: 50514', 'Zip Code: 50515', 'Zip Code: 50516', 'Zip Code: 50517', 'Zip Code: 50518', 'Zip Code: 50519', 'Zip Code: 50520', 'Zip Code: 50522', 'Zip Code: 50523', 'Zip Code: 50524',
+          'Zip Code: 50525', 'Zip Code: 50527', 'Zip Code: 50528', 'Zip Code: 50529', 'Zip Code: 50530', 'Zip Code: 50531', 'Zip Code: 50532', 'Zip Code: 50533', 'Zip Code: 50535', 'Zip Code: 50536', 'Zip Code: 50538', 'Zip Code: 50539',
+          'Zip Code: 50540', 'Zip Code: 50541', 'Zip Code: 50542', 'Zip Code: 50543', 'Zip Code: 50544', 'Zip Code: 50545', 'Zip Code: 50546', 'Zip Code: 50548', 'Zip Code: 50551', 'Zip Code: 50554', 'Zip Code: 50556', 'Zip Code: 50557',
+          'Zip Code: 50558', 'Zip Code: 50559', 'Zip Code: 50560', 'Zip Code: 50561', 'Zip Code: 50562', 'Zip Code: 50563', 'Zip Code: 50565', 'Zip Code: 50566', 'Zip Code: 50567', 'Zip Code: 50568', 'Zip Code: 50569', 'Zip Code: 50570',
+          'Zip Code: 50571', 'Zip Code: 50574', 'Zip Code: 50575', 'Zip Code: 50576', 'Zip Code: 50577', 'Zip Code: 50578', 'Zip Code: 50579', 'Zip Code: 50581', 'Zip Code: 50582', 'Zip Code: 50583', 'Zip Code: 50585', 'Zip Code: 50586',
+          'Zip Code: 50588', 'Zip Code: 50590', 'Zip Code: 50591', 'Zip Code: 50594', 'Zip Code: 50595', 'Zip Code: 50597', 'Zip Code: 50598', 'Zip Code: 50599', 'Zip Code: 50601', 'Zip Code: 50602', 'Zip Code: 50603', 'Zip Code: 50604',
+          'Zip Code: 50605', 'Zip Code: 50606', 'Zip Code: 50607', 'Zip Code: 50608', 'Zip Code: 50609', 'Zip Code: 50611', 'Zip Code: 50612', 'Zip Code: 50613', 'Zip Code: 50614', 'Zip Code: 50616', 'Zip Code: 50619', 'Zip Code: 50620',
+          'Zip Code: 50621', 'Zip Code: 50622', 'Zip Code: 50623', 'Zip Code: 50624', 'Zip Code: 50625', 'Zip Code: 50626', 'Zip Code: 50627', 'Zip Code: 50628', 'Zip Code: 50629', 'Zip Code: 50630', 'Zip Code: 50632', 'Zip Code: 50633',
+          'Zip Code: 50634', 'Zip Code: 50635', 'Zip Code: 50636', 'Zip Code: 50638', 'Zip Code: 50641', 'Zip Code: 50642', 'Zip Code: 50643', 'Zip Code: 50644', 'Zip Code: 50645', 'Zip Code: 50647', 'Zip Code: 50648', 'Zip Code: 50649',
+          'Zip Code: 50650', 'Zip Code: 50651', 'Zip Code: 50653', 'Zip Code: 50654', 'Zip Code: 50655', 'Zip Code: 50657', 'Zip Code: 50658', 'Zip Code: 50659', 'Zip Code: 50660', 'Zip Code: 50662', 'Zip Code: 50664', 'Zip Code: 50665',
+          'Zip Code: 50666', 'Zip Code: 50667', 'Zip Code: 50668', 'Zip Code: 50669', 'Zip Code: 50670', 'Zip Code: 50671', 'Zip Code: 50672', 'Zip Code: 50674', 'Zip Code: 50675', 'Zip Code: 50676', 'Zip Code: 50677', 'Zip Code: 50680',
+          'Zip Code: 50681', 'Zip Code: 50682', 'Zip Code: 50701', 'Zip Code: 50702', 'Zip Code: 50703', 'Zip Code: 50707', 'Zip Code: 50801', 'Zip Code: 50830', 'Zip Code: 50833', 'Zip Code: 50835', 'Zip Code: 50836', 'Zip Code: 50837',
+          'Zip Code: 50839', 'Zip Code: 50840', 'Zip Code: 50841', 'Zip Code: 50842', 'Zip Code: 50843', 'Zip Code: 50845', 'Zip Code: 50846', 'Zip Code: 50847', 'Zip Code: 50848', 'Zip Code: 50849', 'Zip Code: 50851', 'Zip Code: 50853',
+          'Zip Code: 50854', 'Zip Code: 50857', 'Zip Code: 50858', 'Zip Code: 50859', 'Zip Code: 50860', 'Zip Code: 50861', 'Zip Code: 50862', 'Zip Code: 50863', 'Zip Code: 50864', 'Zip Code: 51001', 'Zip Code: 51002', 'Zip Code: 51003',
+          'Zip Code: 51004', 'Zip Code: 51005', 'Zip Code: 51006', 'Zip Code: 51007', 'Zip Code: 51009', 'Zip Code: 51010', 'Zip Code: 51011', 'Zip Code: 51012', 'Zip Code: 51014', 'Zip Code: 51016', 'Zip Code: 51018', 'Zip Code: 51019',
+          'Zip Code: 51020', 'Zip Code: 51022', 'Zip Code: 51023', 'Zip Code: 51024', 'Zip Code: 51025', 'Zip Code: 51026', 'Zip Code: 51027', 'Zip Code: 51028', 'Zip Code: 51029', 'Zip Code: 51030', 'Zip Code: 51031', 'Zip Code: 51033',
+          'Zip Code: 51034', 'Zip Code: 51035', 'Zip Code: 51036', 'Zip Code: 51037', 'Zip Code: 51038', 'Zip Code: 51039', 'Zip Code: 51040', 'Zip Code: 51041', 'Zip Code: 51044', 'Zip Code: 51046', 'Zip Code: 51047', 'Zip Code: 51048',
+          'Zip Code: 51049', 'Zip Code: 51050', 'Zip Code: 51051', 'Zip Code: 51052', 'Zip Code: 51053', 'Zip Code: 51054', 'Zip Code: 51055', 'Zip Code: 51056', 'Zip Code: 51058', 'Zip Code: 51060', 'Zip Code: 51061', 'Zip Code: 51062',
+          'Zip Code: 51063', 'Zip Code: 51101', 'Zip Code: 51103', 'Zip Code: 51104', 'Zip Code: 51105', 'Zip Code: 51106', 'Zip Code: 51108', 'Zip Code: 51109', 'Zip Code: 51111', 'Zip Code: 51201', 'Zip Code: 51230', 'Zip Code: 51231',
+          'Zip Code: 51232', 'Zip Code: 51234', 'Zip Code: 51235', 'Zip Code: 51237', 'Zip Code: 51238', 'Zip Code: 51239', 'Zip Code: 51240', 'Zip Code: 51241', 'Zip Code: 51242', 'Zip Code: 51243', 'Zip Code: 51244', 'Zip Code: 51245',
+          'Zip Code: 51246', 'Zip Code: 51247', 'Zip Code: 51248', 'Zip Code: 51249', 'Zip Code: 51250', 'Zip Code: 51301', 'Zip Code: 51331', 'Zip Code: 51333', 'Zip Code: 51334', 'Zip Code: 51338', 'Zip Code: 51342', 'Zip Code: 51343',
+          'Zip Code: 51345', 'Zip Code: 51346', 'Zip Code: 51347', 'Zip Code: 51350', 'Zip Code: 51351', 'Zip Code: 51354', 'Zip Code: 51355', 'Zip Code: 51357', 'Zip Code: 51358', 'Zip Code: 51360', 'Zip Code: 51363', 'Zip Code: 51364',
+          'Zip Code: 51365', 'Zip Code: 51366', 'Zip Code: 51401', 'Zip Code: 51430', 'Zip Code: 51431', 'Zip Code: 51432', 'Zip Code: 51433', 'Zip Code: 51436', 'Zip Code: 51439', 'Zip Code: 51440', 'Zip Code: 51441', 'Zip Code: 51442',
+          'Zip Code: 51443', 'Zip Code: 51444', 'Zip Code: 51445', 'Zip Code: 51446', 'Zip Code: 51447', 'Zip Code: 51448', 'Zip Code: 51449', 'Zip Code: 51450', 'Zip Code: 51453', 'Zip Code: 51454', 'Zip Code: 51455', 'Zip Code: 51458',
+          'Zip Code: 51461', 'Zip Code: 51462', 'Zip Code: 51463', 'Zip Code: 51465', 'Zip Code: 51466', 'Zip Code: 51467', 'Zip Code: 51501', 'Zip Code: 51503', 'Zip Code: 51510', 'Zip Code: 51520', 'Zip Code: 51521', 'Zip Code: 51523',
+          'Zip Code: 51525', 'Zip Code: 51526', 'Zip Code: 51527', 'Zip Code: 51528', 'Zip Code: 51529', 'Zip Code: 51530', 'Zip Code: 51531', 'Zip Code: 51532', 'Zip Code: 51533', 'Zip Code: 51534', 'Zip Code: 51535', 'Zip Code: 51536',
+          'Zip Code: 51537', 'Zip Code: 51540', 'Zip Code: 51541', 'Zip Code: 51542', 'Zip Code: 51543', 'Zip Code: 51544', 'Zip Code: 51545', 'Zip Code: 51546', 'Zip Code: 51548', 'Zip Code: 51549', 'Zip Code: 51550', 'Zip Code: 51551',
+          'Zip Code: 51552', 'Zip Code: 51553', 'Zip Code: 51554', 'Zip Code: 51555', 'Zip Code: 51556', 'Zip Code: 51557', 'Zip Code: 51558', 'Zip Code: 51559', 'Zip Code: 51560', 'Zip Code: 51561', 'Zip Code: 51562', 'Zip Code: 51563',
+          'Zip Code: 51564', 'Zip Code: 51565', 'Zip Code: 51566', 'Zip Code: 51570', 'Zip Code: 51571', 'Zip Code: 51572', 'Zip Code: 51573', 'Zip Code: 51575', 'Zip Code: 51576', 'Zip Code: 51577', 'Zip Code: 51578', 'Zip Code: 51579',
+          'Zip Code: 51601', 'Zip Code: 51630', 'Zip Code: 51631', 'Zip Code: 51632', 'Zip Code: 51636', 'Zip Code: 51637', 'Zip Code: 51638', 'Zip Code: 51639', 'Zip Code: 51640', 'Zip Code: 51645', 'Zip Code: 51646', 'Zip Code: 51647',
+          'Zip Code: 51648', 'Zip Code: 51649', 'Zip Code: 51650', 'Zip Code: 51652', 'Zip Code: 51653', 'Zip Code: 51654', 'Zip Code: 51656', 'Zip Code: 52001', 'Zip Code: 52002', 'Zip Code: 52003', 'Zip Code: 52031', 'Zip Code: 52032',
+          'Zip Code: 52033', 'Zip Code: 52035', 'Zip Code: 52036', 'Zip Code: 52037', 'Zip Code: 52038', 'Zip Code: 52039', 'Zip Code: 52040', 'Zip Code: 52041', 'Zip Code: 52042', 'Zip Code: 52043', 'Zip Code: 52044', 'Zip Code: 52045',
+          'Zip Code: 52046', 'Zip Code: 52047', 'Zip Code: 52048', 'Zip Code: 52049', 'Zip Code: 52050', 'Zip Code: 52052', 'Zip Code: 52053', 'Zip Code: 52054', 'Zip Code: 52057', 'Zip Code: 52060', 'Zip Code: 52064', 'Zip Code: 52065',
+          'Zip Code: 52066', 'Zip Code: 52068', 'Zip Code: 52069', 'Zip Code: 52070', 'Zip Code: 52072', 'Zip Code: 52073', 'Zip Code: 52074', 'Zip Code: 52076', 'Zip Code: 52077', 'Zip Code: 52078', 'Zip Code: 52079', 'Zip Code: 52101',
+          'Zip Code: 52132', 'Zip Code: 52133', 'Zip Code: 52134', 'Zip Code: 52135', 'Zip Code: 52136', 'Zip Code: 52140', 'Zip Code: 52141', 'Zip Code: 52142', 'Zip Code: 52144', 'Zip Code: 52146', 'Zip Code: 52147', 'Zip Code: 52151',
+          'Zip Code: 52154', 'Zip Code: 52155', 'Zip Code: 52156', 'Zip Code: 52157', 'Zip Code: 52158', 'Zip Code: 52159', 'Zip Code: 52160', 'Zip Code: 52161', 'Zip Code: 52162', 'Zip Code: 52163', 'Zip Code: 52164', 'Zip Code: 52165',
+          'Zip Code: 52169', 'Zip Code: 52170', 'Zip Code: 52171', 'Zip Code: 52172', 'Zip Code: 52175', 'Zip Code: 52201', 'Zip Code: 52202', 'Zip Code: 52203', 'Zip Code: 52205', 'Zip Code: 52206', 'Zip Code: 52207', 'Zip Code: 52208',
+          'Zip Code: 52209', 'Zip Code: 52210', 'Zip Code: 52211', 'Zip Code: 52212', 'Zip Code: 52213', 'Zip Code: 52214', 'Zip Code: 52215', 'Zip Code: 52216', 'Zip Code: 52217', 'Zip Code: 52218', 'Zip Code: 52219', 'Zip Code: 52220',
+          'Zip Code: 52221', 'Zip Code: 52222', 'Zip Code: 52223', 'Zip Code: 52224', 'Zip Code: 52225', 'Zip Code: 52227', 'Zip Code: 52228', 'Zip Code: 52229', 'Zip Code: 52231', 'Zip Code: 52232', 'Zip Code: 52233', 'Zip Code: 52235',
+          'Zip Code: 52236', 'Zip Code: 52237', 'Zip Code: 52240', 'Zip Code: 52241', 'Zip Code: 52242', 'Zip Code: 52245', 'Zip Code: 52246', 'Zip Code: 52247', 'Zip Code: 52248', 'Zip Code: 52249', 'Zip Code: 52251', 'Zip Code: 52252',
+          'Zip Code: 52253', 'Zip Code: 52254', 'Zip Code: 52255', 'Zip Code: 52257', 'Zip Code: 52301', 'Zip Code: 52302', 'Zip Code: 52305', 'Zip Code: 52306', 'Zip Code: 52307', 'Zip Code: 52309', 'Zip Code: 52310', 'Zip Code: 52312',
+          'Zip Code: 52313', 'Zip Code: 52314', 'Zip Code: 52315', 'Zip Code: 52316', 'Zip Code: 52317', 'Zip Code: 52318', 'Zip Code: 52320', 'Zip Code: 52321', 'Zip Code: 52322', 'Zip Code: 52323', 'Zip Code: 52324', 'Zip Code: 52325',
+          'Zip Code: 52326', 'Zip Code: 52327', 'Zip Code: 52328', 'Zip Code: 52329', 'Zip Code: 52330', 'Zip Code: 52332', 'Zip Code: 52333', 'Zip Code: 52334', 'Zip Code: 52335', 'Zip Code: 52336', 'Zip Code: 52337', 'Zip Code: 52338',
+          'Zip Code: 52339', 'Zip Code: 52340', 'Zip Code: 52341', 'Zip Code: 52342', 'Zip Code: 52345', 'Zip Code: 52346', 'Zip Code: 52347', 'Zip Code: 52348', 'Zip Code: 52349', 'Zip Code: 52351', 'Zip Code: 52352', 'Zip Code: 52353',
+          'Zip Code: 52354', 'Zip Code: 52355', 'Zip Code: 52356', 'Zip Code: 52358', 'Zip Code: 52359', 'Zip Code: 52361', 'Zip Code: 52362', 'Zip Code: 52401', 'Zip Code: 52402', 'Zip Code: 52403', 'Zip Code: 52404', 'Zip Code: 52405',
+          'Zip Code: 52411', 'Zip Code: 52501', 'Zip Code: 52530', 'Zip Code: 52531', 'Zip Code: 52533', 'Zip Code: 52534', 'Zip Code: 52535', 'Zip Code: 52536', 'Zip Code: 52537', 'Zip Code: 52540', 'Zip Code: 52542', 'Zip Code: 52543',
+          'Zip Code: 52544', 'Zip Code: 52548', 'Zip Code: 52549', 'Zip Code: 52550', 'Zip Code: 52551', 'Zip Code: 52552', 'Zip Code: 52553', 'Zip Code: 52554', 'Zip Code: 52555', 'Zip Code: 52556', 'Zip Code: 52560', 'Zip Code: 52561',
+          'Zip Code: 52563', 'Zip Code: 52565', 'Zip Code: 52566', 'Zip Code: 52567', 'Zip Code: 52569', 'Zip Code: 52570', 'Zip Code: 52571', 'Zip Code: 52572', 'Zip Code: 52573', 'Zip Code: 52574', 'Zip Code: 52576', 'Zip Code: 52577',
+          'Zip Code: 52580', 'Zip Code: 52581', 'Zip Code: 52583', 'Zip Code: 52584', 'Zip Code: 52585', 'Zip Code: 52586', 'Zip Code: 52588', 'Zip Code: 52590', 'Zip Code: 52591', 'Zip Code: 52593', 'Zip Code: 52594', 'Zip Code: 52601',
+          'Zip Code: 52619', 'Zip Code: 52620', 'Zip Code: 52621', 'Zip Code: 52623', 'Zip Code: 52624', 'Zip Code: 52625', 'Zip Code: 52626', 'Zip Code: 52627', 'Zip Code: 52630', 'Zip Code: 52632', 'Zip Code: 52635', 'Zip Code: 52637',
+          'Zip Code: 52638', 'Zip Code: 52639', 'Zip Code: 52640', 'Zip Code: 52641', 'Zip Code: 52644', 'Zip Code: 52645', 'Zip Code: 52646', 'Zip Code: 52649', 'Zip Code: 52650', 'Zip Code: 52651', 'Zip Code: 52653', 'Zip Code: 52654',
+          'Zip Code: 52655', 'Zip Code: 52656', 'Zip Code: 52657', 'Zip Code: 52658', 'Zip Code: 52659', 'Zip Code: 52660', 'Zip Code: 52720', 'Zip Code: 52721', 'Zip Code: 52722', 'Zip Code: 52726', 'Zip Code: 52727', 'Zip Code: 52728',
+          'Zip Code: 52729', 'Zip Code: 52730', 'Zip Code: 52731', 'Zip Code: 52732', 'Zip Code: 52737', 'Zip Code: 52738', 'Zip Code: 52739', 'Zip Code: 52742', 'Zip Code: 52745', 'Zip Code: 52746', 'Zip Code: 52747', 'Zip Code: 52748',
+          'Zip Code: 52749', 'Zip Code: 52750', 'Zip Code: 52751', 'Zip Code: 52753', 'Zip Code: 52754', 'Zip Code: 52755', 'Zip Code: 52756', 'Zip Code: 52758', 'Zip Code: 52759', 'Zip Code: 52760', 'Zip Code: 52761', 'Zip Code: 52765',
+          'Zip Code: 52766', 'Zip Code: 52768', 'Zip Code: 52769', 'Zip Code: 52772', 'Zip Code: 52773', 'Zip Code: 52776', 'Zip Code: 52777', 'Zip Code: 52778', 'Zip Code: 52801', 'Zip Code: 52802', 'Zip Code: 52803', 'Zip Code: 52804',
+          'Zip Code: 52806', 'Zip Code: 52807'
+        ],
+        filterOnEveryClick: true,
+        icon: '<i class="far fa-envelope"></i>',
+      }).addTo(map);
+
+      jQuery('.easy-button-button').click(function() {
+        target = jQuery('.easy-button-button').not(this);
+        target.parent().find('.tag-filter-tags-container').css({
+          'display': 'none',
+        });
+      });
+
+      //disable dragging of the map after clicking a filter button
+      jQuery('.easy-button-button').click(function() {
+        map.dragging.disable();
+      });
+
+      //enable dragging of the map after clicking on the map
+      map.on('click', function() {
+        map.dragging.enable();
+      });
+
+      // add content to the legend
+      zipLegend.onAdd = function(map) {
+
+        var div = L.DomUtil.create('div', 'info legend'),
+          grades = [0.00, 9.00, 24.00, 47.00, 83.00, 161.00, 422.00],
+          labels = ["<h6 style='font-size:14px; font-weight:bold'>Attorneys by Zip Code</h6>"];
+
+        // loop through our density intervals and generate a label with a colored square for each interval
+        for (var i = 0; i < grades.length; i++) {
+          div.innerHTML +=
+            labels.push('<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
+              (grades[i] + 1) + (grades[i + 1] ? '&ndash;' + grades[i + 1] : '+'));
+        }
+        div.innerHTML = labels.join('<br>');
+        return div;
+      };
+
+      // add content to the legend
+      thdsLegend.onAdd = function(map) {
+
+        var div = L.DomUtil.create('div', 'info legend'),
+          grades = [0.00, 0.62, 1.98, 6.38, 13.69, 78.80, 129.88],
+          labels = ["<h6 style='font-size:14px; font-weight:bold'>Attorneys per 1,000 People</h6>"];
+
+        // loop through our density intervals and generate a label with a colored square for each interval
+        for (var i = 0; i < grades.length; i++) {
+          div.innerHTML +=
+            labels.push('<i style="background:' + getShade(grades[i] + 0.02) + '"></i> ' +
+              (grades[i] + 0.01) + (grades[i + 1] ? '&ndash;' + grades[i + 1] : '+'));
+          //grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] : '+'));
+        }
+        div.innerHTML = labels.join('<br>');
+        return div;
+      };
+
+      // add this legend to the map, because this legend is on by default
+      zipLegend.addTo(map);
+
+      // when the user changes the baselayer, switch the legend
+      map.on('baselayerchange', function(eventLayer) {
+        // Switch to the Attorneys by Zip Code legend...
+        if (eventLayer.name === 'Attorneys by Zip Code') {
+          this.removeControl(thdsLegend);
+          zipLegend.addTo(this);
+        } else { // Or switch to the Attorneys per 1,000 People legend...
+          this.removeControl(zipLegend);
+          thdsLegend.addTo(this);
+        }
+      });
+
+      //add zoom control
+      L.control.zoom({
+           position:'topleft'
+      }).addTo(map);
+
+      var mapsTitle = L.control({
+        position: 'topright' //place the maps window at top left corner
+      });
+
+      //when added to the map
+      mapsTitle.onAdd = function(map) {
+
+        var div = L.DomUtil.get("info_text"); //get the style settings
+
+        return div; //return the style settings
+
+      }
+
+      mapsTitle.addTo(map); //add the maps title window to the map
+
+      var map1button = L.easyButton({
+        id: 'map1button',
+        //position: 'topright',
+        states: [{
+          stateName: 'change-map',
+          icon: '<strong>1</strong>',
+          title: 'Go to Map 1: Where is Rural Iowa?',
+          onClick: function(e) {
+            window.location.href = 'index.html';
+          }
+        }]
+      });
+
+      map1button.addTo(map);
+
+    }; // end drawMap function
+
+  </script>
+</body>
+
+</html>
