@@ -200,7 +200,8 @@
         d > 24.00 ? '#fec44f' :
         d > 9.00 ? '#fee391' :
         d > 0.00 ? '#ffffd4' :
-        '#1C00ff00';
+        'rgba(0,0,0,0.0)'; // supported by Microsoft Edge?
+        //'#1C00ff00';
     };
 
     // Add a function to style the zip codes by attorneys per thousand people (jenks)
@@ -212,7 +213,8 @@
         d > 1.98 ? '#7fcdbb' :
         d > 0.62 ? '#c7e9b4' :
         d > 0.00 ? '#ffffcc' :
-        '#1C00ff00';
+        'rgba(0,0,0,0.0)'; // supported by Microsoft Edge?
+        //'#1C00ff00';
     };
 
     // load the data asynchronously
