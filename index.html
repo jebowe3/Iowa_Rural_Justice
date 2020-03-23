@@ -164,7 +164,8 @@
             strokeOpacity: 0.75,
             weight: 0.5,
             fillColor: 'rgba(0,0,0,0.0)',
-            fillOpacity: 0.0
+            fillOpacity: 0.0,
+            smoothFactor: 0.99
           };
         },
 
@@ -177,7 +178,8 @@
             layer.setStyle({
               color: 'yellow',
               weight: 3,
-              opacity: 0.5
+              opacity: 0.5,
+              smoothFactor: 0.99
             });
           });
           // reset style on mouseout
@@ -199,7 +201,8 @@
             strokeOpacity: 0.75,
             weight: 0.5,
             fillColor: '#FFFF66',
-            fillOpacity: 0.5
+            fillOpacity: 0.5,
+            smoothFactor: 0.99
           };
         },
 
@@ -210,12 +213,13 @@
           // change layer style on mouseover
           layer.on("mouseover", function(e) {
             layer.setStyle({
-              stroke: 0.5,
+              stroke: 1.0,
               color: '#FFFF00',
-              strokeOpacity: 0.75,
-              weight: 0.5,
+              strokeOpacity: 1.0,
+              weight: 1.0,
               fillColor: '#FFFF00',
-              fillOpacity: 0.5
+              fillOpacity: 0.75,
+              smoothFactor: 0.99
             });
           });
           // reset style on mouseout
@@ -237,7 +241,8 @@
             strokeOpacity: 0.75,
             weight: 0.5,
             fillColor: '#87CEFA',
-            fillOpacity: 0.5
+            fillOpacity: 0.5,
+            smoothFactor: 0.99
           };
         },
 
@@ -253,7 +258,8 @@
               strokeOpacity: 0.75,
               weight: 0.5,
               fillColor: '#4169E1',
-              fillOpacity: 0.5
+              fillOpacity: 0.5,
+              smoothFactor: 0.99
             });
           });
           // reset style on mouseout
@@ -275,7 +281,8 @@
             strokeOpacity: 0.75,
             weight: 0.5,
             fillColor: '#FFFF66',
-            fillOpacity: 0.5
+            fillOpacity: 0.5,
+            smoothFactor: 0.99
           };
         },
 
@@ -287,12 +294,13 @@
           // change layer style on mouseover
           layer.on("mouseover", function(e) {
             layer.setStyle({
-              stroke: 0.5,
+              stroke: 1.0,
               color: '#FFFF00',
-              strokeOpacity: 0.75,
-              weight: 0.5,
+              strokeOpacity: 1.0,
+              weight: 1.0,
               fillColor: '#FFFF00',
-              fillOpacity: 0.5
+              fillOpacity: 0.75,
+              smoothFactor: 0.99
             });
           });
           // reset style on mouseout
@@ -314,7 +322,8 @@
             strokeOpacity: 0.75,
             weight: 0.5,
             fillColor: '#87CEFA',
-            fillOpacity: 0.5
+            fillOpacity: 0.5,
+            smoothFactor: 0.99
           };
         },
 
@@ -330,7 +339,8 @@
               strokeOpacity: 0.75,
               weight: 0.5,
               fillColor: '#4169E1',
-              fillOpacity: 0.5
+              fillOpacity: 0.5,
+              smoothFactor: 0.99
             });
           });
           // reset style on mouseout

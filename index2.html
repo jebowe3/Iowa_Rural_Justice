@@ -244,6 +244,7 @@
             weight: 0.5,
             fillColor: getColor(feature.properties.Count),
             fillOpacity: 0.75,
+            smoothFactor: 0.99,
             tags: tags //define the tags with the tags array
           };
         },
@@ -260,7 +261,8 @@
             layer.setStyle({
               color: '#3232FF',
               weight: 3,
-              opacity: 0.5
+              opacity: 0.5,
+              smoothFactor: 0.99,
             });
           });
           // reset style on mouseout
@@ -289,6 +291,7 @@
             weight: 0.5,
             fillColor: getShade(feature.properties.Attys_perThousand),
             fillOpacity: 0.75,
+            smoothFactor: 0.99,
             tags: tags //define the tags with the tags array
           };
         },
@@ -305,7 +308,8 @@
             layer.setStyle({
               color: '#3232FF',
               weight: 3,
-              opacity: 0.5
+              opacity: 0.5,
+              smoothFactor: 0.99,
             });
           });
           // reset style on mouseout
