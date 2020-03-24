@@ -113,7 +113,6 @@
     .leaflet-control-layers-expanded {
       font-family: 'Rubik', sans-serif;
       font-size: 12px;
-      width: 202px !important;
     }
 
   </style>
@@ -391,16 +390,27 @@
 
       // designate the layers as baselayers (allows only one open at a time)
       var baselayers = {
-        "OMB Rural": iowaOmbRural,
-        "United States Census Rural": USCensusRural,
-        "OMB Urban": iowaOmbUrban,
-        "United States Census Urban": USCensusUrban,
+        "OMB Rural Areas": iowaOmbRural,
+        "US Census Rural Areas": USCensusRural,
+        "OMB Urban Areas": iowaOmbUrban,
+        "US Census Urban Areas": USCensusUrban,
       };
 
       // all done with the layers, add them to layer control
       L.control.layers(baselayers, null, {
         collapsed: false,
       }).addTo(map);
+
+      // if the browser is Chrome or Safari...
+      if ( L.Browser.webkit ) {
+        $('.leaflet-control-layers-expanded').css({ 'width': '199px'});
+      } else if ( L.Browser.ie ) { // if the browser is Internet Explorer...
+        $('.leaflet-control-layers-expanded').css({ 'width': '199px'});
+      } else if (L.Browser.edge) { // if the browser is Microsoft Edge...
+        $('.leaflet-control-layers-expanded').css({ 'width': '199px'});
+      } else { // otherwise...
+        $('.leaflet-control-layers-expanded').css({ 'width': '202px'});
+      };
 
       var mapsTitle = L.control({
         position: 'topright' //place the maps window at top left corner
