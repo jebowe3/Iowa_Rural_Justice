@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.10.2/css/v4-shims.css">
 
 
-  <link href='https://api.mapbox.com/mapbox-assembly/v0.8.0/assembly.min.css' rel='stylesheet'>
+  <link href='https://api.mapbox.com/mapbox-assembly/v0.24.0/assembly.min.css' rel='stylesheet'>
   <link href='https://api.mapbox.com/mapbox.js/v3.2.1/mapbox.css' rel='stylesheet' />
   <link href="https://fonts.googleapis.com/css?family=Rubik&display=swap" rel="stylesheet">
 
@@ -52,6 +52,13 @@
       margin-left: 19px;
       padding-bottom: 1px;
       color: white;
+    }
+
+    h5 {
+      font-size: 14px;
+      font-family: 'Rubik', sans-serif;
+      padding-bottom: 0px;
+      padding-top: 4px;
     }
 
     body {
@@ -145,24 +152,24 @@
 <body>
   <header>
     <h1>Iowa Rural Justice Project: Attorneys by Zip Code</h1><br>
-    <h4>Map by Jay Bowen (2020), University of Iowa Digital Scholarship & Publishing Studio</a></h4>
+    <h4>Map by Jay Bowen, 2020 | University of Iowa Digital Scholarship & Publishing Studio</a></h4>
   </header>
   <div id="map"></div>
 
   <!-- maps title -->
-  <div id='info_text' class='py3 px12 round wmax200'>
-    <h2 class='txt-bold'>Maps:</h2>
+  <div id='info_text' class='px12 round wmax200'>
+    <h5 class='txt-bold'>Maps:</h5>
   </div>
   <!-- end maps title -->
 
   <!-- filters title -->
-  <div id='new_text' class='py3 px12 round top left wmax200'>
-    <h2 class='txt-bold'>Filters:</h2>
+  <div id='new_text' class='px12 round top left wmax200'>
+    <h5 class='txt-bold'>Filters:</h5>
   </div>
   <!-- end filters title -->
 
   <!-- load scripts -->
-  <script src='https://api.mapbox.com/mapbox-assembly/v0.8.0/assembly.js'></script>
+  <script src='https://api.mapbox.com/mapbox-assembly/v0.24.0/assembly.js'></script>
   <script src='https://api.mapbox.com/mapbox.js/v3.2.1/mapbox.js'></script>
   <script src="https://d3js.org/d3.v4.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
@@ -244,7 +251,7 @@
             weight: 0.5,
             fillColor: getColor(feature.properties.Count),
             fillOpacity: 0.75,
-            //smoothFactor: 0.99,
+            smoothFactor: 0.99,
             tags: tags //define the tags with the tags array
           };
         },
@@ -262,7 +269,7 @@
               color: '#3232FF',
               weight: 3,
               opacity: 0.5,
-              //smoothFactor: 0.99,
+              smoothFactor: 0.99,
             });
           });
           // reset style on mouseout
@@ -291,7 +298,7 @@
             weight: 0.5,
             fillColor: getShade(feature.properties.Attys_perThousand),
             fillOpacity: 0.75,
-            //smoothFactor: 0.99,
+            smoothFactor: 0.99,
             tags: tags //define the tags with the tags array
           };
         },
@@ -309,7 +316,7 @@
               color: '#3232FF',
               weight: 3,
               opacity: 0.5,
-              //smoothFactor: 0.99,
+              smoothFactor: 0.99,
             });
           });
           // reset style on mouseout

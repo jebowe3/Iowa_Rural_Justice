@@ -7,7 +7,7 @@
   <link rel="icon" type="image/jpg" href="images/icon.jpg" />
   <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
 
-  <link href='https://api.mapbox.com/mapbox-assembly/v0.8.0/assembly.min.css' rel='stylesheet'>
+  <link href='https://api.mapbox.com/mapbox-assembly/v0.24.0/assembly.min.css' rel='stylesheet'>
   <link href='https://api.mapbox.com/mapbox.js/v3.2.1/mapbox.css' rel='stylesheet' />
   <link href="https://fonts.googleapis.com/css?family=Rubik&display=swap" rel="stylesheet">
 
@@ -46,6 +46,13 @@
       margin-left: 19px;
       padding-bottom: 1px;
       color: white;
+    }
+
+    h5 {
+      font-size: 14px;
+      font-family: 'Rubik', sans-serif;
+      padding-bottom: 0px;
+      padding-top: 4px;
     }
 
     body {
@@ -102,18 +109,18 @@
 <body>
   <header>
     <h1>Iowa Rural Justice Project: Where is Rural Iowa?</h1><br>
-    <h4>Map by Jay Bowen (2020), University of Iowa Digital Scholarship & Publishing Studio</a></h4>
+    <h4>Map by Jay Bowen, 2020 | University of Iowa Digital Scholarship & Publishing Studio</a></h4>
   </header>
   <div id="map"></div>
 
   <!-- maps title -->
-  <div id='info_text' class='py3 px12 round wmax200'>
-    <h2 class='txt-bold'>Maps:</h2>
+  <div id='info_text' class='px12 round wmax200'>
+    <h5 class='txt-bold'>Maps:</h5>
   </div>
   <!-- end maps title -->
 
   <!-- load scripts -->
-  <script src='https://api.mapbox.com/mapbox-assembly/v0.8.0/assembly.js'></script>
+  <script src='https://api.mapbox.com/mapbox-assembly/v0.24.0/assembly.js'></script>
   <script src='https://api.mapbox.com/mapbox.js/v3.2.1/mapbox.js'></script>
   <script src="https://d3js.org/d3.v4.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
