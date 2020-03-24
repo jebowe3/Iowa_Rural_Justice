@@ -369,6 +369,11 @@
         collapsed: false,
       }).addTo(map);
 
+      // if the browser is Chrome or Safari...
+      if ( L.Browser.webkit ) {
+        $('.leaflet-control-layers-expanded').css({"width": "199px !important"});
+      }
+
       // create legends for both layers
       var zipLegend = L.control({
         position: 'bottomright'
