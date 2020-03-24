@@ -7,14 +7,18 @@
   <link rel="icon" type="image/jpg" href="images/icon.jpg" />
   <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
 
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.10.2/css/all.css">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.10.2/css/v4-shims.css">
+  <!--for button-dependent map information window-->
+  <link rel='stylesheet' href='https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css'>
 
-
+  <!--for map and font styles-->
   <link href='https://api.mapbox.com/mapbox-assembly/v0.24.0/assembly.min.css' rel='stylesheet'>
   <link href='https://api.mapbox.com/mapbox.js/v3.2.1/mapbox.css' rel='stylesheet' />
   <link href="https://fonts.googleapis.com/css?family=Rubik&display=swap" rel="stylesheet">
+
+  <!--for filter button icon support-->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.10.2/css/all.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.10.2/css/v4-shims.css">
 
   <!--leaflet tag filter buttons from: https://github.com/maydemirx/leaflet-tag-filter-button-->
   <link rel="stylesheet" href="src/leaflet-tag-filter-button.css">
@@ -39,7 +43,7 @@
     }
 
     h3 {
-      font-size: 5px;
+      font-size: 12px;
       font-family: 'Rubik', sans-serif;
       padding-top: 0px;
     }
@@ -113,6 +117,14 @@
       right: 92px;
     }
 
+    #infoButton {
+      box-shadow: 0px 0px 0px 2px rgba(0, 0, 0, 0.3);
+      position: fixed;
+      z-index: 1000;
+      top: 177px;
+      right: 12px;
+    }
+
     .legend {
       background-color: #fff;
       border-radius: 3px;
@@ -168,12 +180,28 @@
   </div>
   <!-- end filters title -->
 
+  <!-- button-dependent info window -->
+  <div id="dialog" title="Access to legal representation">
+    <h3>This map represents the geographical disparities in access to legal
+      representation throughout Iowa. Toggle the layer controls in the upper
+      right corner to see either the total counts of attorneys or the number of
+      attorneys per 1,000 people by zip code. Click on the map polygons for more
+      detailed information. Filter the polygons with the buttons in the upper
+      left corner to focus on specific zip codes or communities. You can also
+      cycle through other maps in the project by clicking on the numbered buttons
+      below the layer controls.</h3>
+  </div>
+  <!-- end button-dependent info window -->
+
   <!-- load scripts -->
   <script src='https://api.mapbox.com/mapbox-assembly/v0.24.0/assembly.js'></script>
   <script src='https://api.mapbox.com/mapbox.js/v3.2.1/mapbox.js'></script>
   <script src="https://d3js.org/d3.v4.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-sparklines/2.1.2/jquery.sparkline.min.js"></script>
+
+  <!-- for button-dependent map information window -->
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
   <script src="src/easy-button.js"></script>
   <script src="src/leaflet-tag-filter-button.js"></script>
@@ -258,7 +286,7 @@
 
         onEachFeature: function(feature, layer) {
           // bind a popup window
-          layer.bindPopup('<h2><b>Zip Code: ' + feature.properties.Zip + '<br>' + 'Community: ' + feature.properties.PO_NAME + '<br>' + 'Attorneys: ' + feature.properties.Count + '</b></h2>' + feature.properties.popup, {
+          layer.bindPopup('<h2><b>Zip Code: ' + feature.properties.Zip + '<br>' + 'Community: ' + feature.properties.PO_NAME + '<br>' + 'Population: ' + feature.properties.POPULATION + '<br>' + 'Attorneys: ' + feature.properties.Count + '</b></h2>' + feature.properties.popup, {
             maxHeight: 300,
             minWidth: 250,
             maxWidth: 300,
@@ -305,7 +333,7 @@
 
         onEachFeature: function(feature, layer) {
           // bind a popup window
-          layer.bindPopup('<h2><b>Zip Code: ' + feature.properties.Zip + '<br>' + 'Community: ' + feature.properties.PO_NAME + '<br>' + 'Attorneys/1000 People: ' + feature.properties.Attys_perThousand + '</b></h2>' + feature.properties.popup, {
+          layer.bindPopup('<h2><b>Zip Code: ' + feature.properties.Zip + '<br>' + 'Community: ' + feature.properties.PO_NAME + '<br>' + 'Population: ' + feature.properties.POPULATION + '<br>' + 'Attorneys/1000 People: ' + feature.properties.Attys_perThousand + '</b></h2>' + feature.properties.popup, {
             maxHeight: 300,
             minWidth: 250,
             maxWidth: 300,
@@ -604,6 +632,21 @@
       });
 
       map1button.addTo(map);
+
+      var infoButton = L.easyButton({
+        id: 'infoButton',
+        //position: 'topleft',
+        states: [{
+          stateName: 'show-info',
+          icon: '<strong>?</strong>',
+          title: 'Tell me about this map',
+          onClick: function(btn, map){
+            $("#dialog").dialog();
+          }
+        }]
+      });
+
+      infoButton.addTo(map);
 
     }; // end drawMap function
 

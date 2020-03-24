@@ -7,6 +7,9 @@
   <link rel="icon" type="image/jpg" href="images/icon.jpg" />
   <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
 
+  <!-- for button-dependent map information window -->
+  <link rel='stylesheet' href='https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css'>
+
   <link href='https://api.mapbox.com/mapbox-assembly/v0.24.0/assembly.min.css' rel='stylesheet'>
   <link href='https://api.mapbox.com/mapbox.js/v3.2.1/mapbox.css' rel='stylesheet' />
   <link href="https://fonts.googleapis.com/css?family=Rubik&display=swap" rel="stylesheet">
@@ -99,6 +102,14 @@
       right: 99px;
     }
 
+    #infoButton {
+      box-shadow: 0px 0px 0px 2px rgba(0, 0, 0, 0.3);
+      position: fixed;
+      z-index: 1000;
+      top: 215px;
+      right: 12px;
+    }
+
     .leaflet-control-layers-expanded {
       font-family: 'Rubik', sans-serif;
     }
@@ -119,11 +130,27 @@
   </div>
   <!-- end maps title -->
 
+  <!-- button-dependent info window -->
+  <div id="dialog" title="Where is Rural Iowa?">
+    <h3>One of the fundamental issues for our project is to define which parts of
+      Iowa can be considered rural. This map shows how different organizations
+      differentiate between rural and urban. Toggle the layer controls in the
+      upper right corner to see which parts of Iowa are considered rural and urban
+      by the Office of Management and Budget and the US Census Bureau. Click on
+      the map polygons for more detailed information. You can also cycle through
+      other maps in the project by clicking on the numbered buttons below the
+      layer controls.</h3>
+  </div>
+  <!-- end button-dependent info window -->
+
   <!-- load scripts -->
   <script src='https://api.mapbox.com/mapbox-assembly/v0.24.0/assembly.js'></script>
   <script src='https://api.mapbox.com/mapbox.js/v3.2.1/mapbox.js'></script>
   <script src="https://d3js.org/d3.v4.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+  <!-- for button-dependent map information window -->
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
   <script src="src/easy-button.js"></script>
 
@@ -180,7 +207,7 @@
         onEachFeature: function(feature, layer) {
           // bind a popup window
           layer.bindPopup('<h2><b>' + feature.properties.COUNTY + ' County, ' + feature.properties.ST +
-            '</b></h2></br><h3>Area: ' + feature.properties.Area_SqMi.toFixed(2) + ' sq mi</h3>');
+            '</b></h2><h3>Area: ' + feature.properties.Area_SqMi.toFixed(2) + ' sq mi</h3>');
           // change layer style on mouseover
           layer.on("mouseover", function(e) {
             layer.setStyle({
@@ -217,7 +244,7 @@
         onEachFeature: function(feature, layer) {
           // bind a popup window
           layer.bindPopup('<h2><b>' + feature.properties.COUNTY + ' County, ' + feature.properties.ST +
-            '</b></h2></br><h3>Area: ' + feature.properties.Area_SqMi.toFixed(2) + ' sq mi</h3>');
+            '</b></h2><h3>Area: ' + feature.properties.Area_SqMi.toFixed(2) + ' sq mi</h3>');
           // change layer style on mouseover
           layer.on("mouseover", function(e) {
             layer.setStyle({
@@ -257,7 +284,7 @@
         onEachFeature: function(feature, layer) {
           // bind a popup window
           layer.bindPopup('<h2><b>' + feature.properties.NAMELSAD +
-            '</b></h2></br><h3>Area: ' + feature.properties.sqmi.toFixed(2) + ' sq mi</h3>');
+            '</b></h2><h3>Area: ' + feature.properties.sqmi.toFixed(2) + ' sq mi</h3>');
           // change layer style on mouseover
           layer.on("mouseover", function(e) {
             layer.setStyle({
@@ -297,7 +324,7 @@
         onEachFeature: function(feature, layer) {
           // bind a popup window
           layer.bindPopup('<h2><b>' + feature.properties.COUNTY + ' County, ' + feature.properties.ST +
-            '</b></h2></br><h3>Area: ' + feature.properties.Area_SqMi.toFixed(2) + ' sq mi' +
+            '</b></h2><h3>Area: ' + feature.properties.Area_SqMi.toFixed(2) + ' sq mi' +
             '</br>Percent Rural: ' + feature.properties.Perc_Rural + '%</h3>');
           // change layer style on mouseover
           layer.on("mouseover", function(e) {
@@ -338,7 +365,7 @@
         onEachFeature: function(feature, layer) {
           // bind a popup window
           layer.bindPopup('<h2><b>' + feature.properties.NAMELSAD10 +
-            '</b></h2></br><h3>Area: ' + feature.properties.sqmi.toFixed(2) + ' sq mi</h3>');
+            '</b></h2><h3>Area: ' + feature.properties.sqmi.toFixed(2) + ' sq mi</h3>');
           // change layer style on mouseover
           layer.on("mouseover", function(e) {
             layer.setStyle({
@@ -402,6 +429,21 @@
       });
 
       map2button.addTo(map);
+
+      var infoButton = L.easyButton({
+        id: 'infoButton',
+        //position: 'topleft',
+        states: [{
+          stateName: 'show-info',
+          icon: '<strong>?</strong>',
+          title: 'Tell me about this map',
+          onClick: function(btn, map){
+            $("#dialog").dialog();
+          }
+        }]
+      });
+
+      infoButton.addTo(map);
 
     }; // end drawMap function
 
