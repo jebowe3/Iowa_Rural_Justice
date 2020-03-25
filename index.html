@@ -118,7 +118,6 @@
       font-family: 'Rubik', sans-serif;
       font-size: 12px;
     }
-
   </style>
 </head>
 
@@ -169,37 +168,37 @@
 
     // Load tile layer
     L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-    	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-    	subdomains: 'abcd',
-    	maxZoom: 16,
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+      subdomains: 'abcd',
+      maxZoom: 16,
       minZoom: 7,
     }).addTo(map);
-/*
-    // fit map to Iowa
-    map.fitBounds([
-      [43.50102, -90.14006],
-      [40.37544, -96.63967]
-    ]);
-*/
+    /*
+        // fit map to Iowa
+        map.fitBounds([
+          [43.50102, -90.14006],
+          [40.37544, -96.63967]
+        ]);
+    */
     // if the browser is Chrome...
-    if ( L.Browser.webkit ) {
+    if (L.Browser.webkit) {
       /*
        * Workaround for 1px lines appearing in some browsers due to fractional transforms
        * and resulting anti-aliasing.
        * https://github.com/Leaflet/Leaflet/issues/3575
        */
-      (function(){
-          var originalInitTile = L.GridLayer.prototype._initTile
-          L.GridLayer.include({
-              _initTile: function (tile) {
-                  originalInitTile.call(this, tile);
+      (function() {
+        var originalInitTile = L.GridLayer.prototype._initTile
+        L.GridLayer.include({
+          _initTile: function(tile) {
+            originalInitTile.call(this, tile);
 
-                  var tileSize = this.getTileSize();
+            var tileSize = this.getTileSize();
 
-                  tile.style.width = tileSize.x + 1 + 'px';
-                  tile.style.height = tileSize.y + 1 + 'px';
-              }
-          });
+            tile.style.width = tileSize.x + 1 + 'px';
+            tile.style.height = tileSize.y + 1 + 'px';
+          }
+        });
       })()
     };
 
@@ -262,7 +261,7 @@
         // style the layer
         style: function(feature) {
           // if Google Chrome...
-          if ( L.Browser.webkit ) {
+          if (L.Browser.webkit) {
             return {
               stroke: 1,
               color: '#FFFF66',
@@ -356,7 +355,7 @@
         // style the layer
         style: function(feature) {
           // if Google Chrome...
-          if ( L.Browser.webkit ) {
+          if (L.Browser.webkit) {
             return {
               stroke: 1,
               color: '#FFFF66',
@@ -453,7 +452,7 @@
 
       // designate the layers as grouped overlays
       var groupedOverlays = {
-        "Layers":{ // give each layer a name
+        "Layers": { // give each layer a name
           "OMB Rural Areas": iowaOmbRural,
           "US Census Rural Areas": USCensusRural,
           "OMB Urban Areas": iowaOmbUrban,
@@ -473,29 +472,40 @@
 
       // add the layer controls to the map
       map.addControl(layerControl);
-/*
-      // all done with the layers, add them to layer control
-      L.control.layers(null, baselayers, {
-        collapsed: false,
-      }).addTo(map);
-*/
+      /*
+            // all done with the layers, add them to layer control
+            L.control.layers(null, baselayers, {
+              collapsed: false,
+            }).addTo(map);
+      */
+
+      // if the browser is Chrome or Safari...
+      if (L.Browser.webkit) {
+        $('.leaflet-control-layers-expanded').css({
+          'width': '199px'
+        });
+      } else if (L.Browser.ie) { // if the browser is Internet Explorer...
+        $('.leaflet-control-layers-expanded').css({
+          'width': '201px'
+        });
+      } else { // otherwise...
+        $('.leaflet-control-layers-expanded').css({
+          'width': '202px'
+        });
+      };
+
       // if the browser is Edge...
       if (L.Browser.edge) {
-        $('.leaflet-control-layers-expanded').css({ 'width': '204px'});
+        $('.leaflet-control-layers-expanded').css({
+          'width': '204px'
+        });
       }
 
       // if the browser if Safari...
       if (L.Browser.safari) {
-        $('.leaflet-control-layers-expanded').css({ 'width': '204px'});
-      };
-      
-      // if the browser is Chrome or Safari...
-      if ( L.Browser.webkit ) {
-        $('.leaflet-control-layers-expanded').css({ 'width': '199px'});
-      } else if ( L.Browser.ie ) { // if the browser is Internet Explorer...
-        $('.leaflet-control-layers-expanded').css({ 'width': '201px'});
-      } else { // otherwise...
-        $('.leaflet-control-layers-expanded').css({ 'width': '202px'});
+        $('.leaflet-control-layers-expanded').css({
+          'width': '204px'
+        });
       };
 
       var mapsTitle = L.control({
@@ -535,7 +545,7 @@
           stateName: 'show-info',
           icon: '<strong>?</strong>',
           title: 'Tell me about this map',
-          onClick: function(btn, map){
+          onClick: function(btn, map) {
             $("#dialog").dialog();
           }
         }]
@@ -544,7 +554,6 @@
       infoButton.addTo(map);
 
     }; // end drawMap function
-
   </script>
 </body>
 

@@ -106,7 +106,7 @@
       padding-bottom: 10px;
       padding-left: 5px;
       height: 30px;
-      box-shadow: 0px 0px 0px 2px rgba(0,0,0,0.3);
+      box-shadow: 0px 0px 0px 2px rgba(0, 0, 0, 0.3);
     }
 
     #map1button {
@@ -209,7 +209,9 @@
 
   <script type="text/javascript">
     // Initialize the map
-    var map = L.map('map',{zoomControl: false}).setView([42.065, -93.500], 8);
+    var map = L.map('map', {
+      zoomControl: false
+    }).setView([42.065, -93.500], 8);
 
     // Load tile layer
     L.tileLayer('https://tile.thunderforest.com/neighbourhood/{z}/{x}/{y}.png?apikey=dd2dca516d114fd89c0b1403358cbfa8', {
@@ -218,13 +220,13 @@
       maxZoom: 16,
       minZoom: 7,
     }).addTo(map);
-/*
-    // fit map to Iowa
-    map.fitBounds([
-      [43.50102, -90.14006],
-      [40.37544, -96.63967]
-    ]);
-*/
+    /*
+        // fit map to Iowa
+        map.fitBounds([
+          [43.50102, -90.14006],
+          [40.37544, -96.63967]
+        ]);
+    */
     // add a scale bar
     L.control.scale().addTo(map); // Initialize the map
 
@@ -238,7 +240,7 @@
         d > 9.00 ? '#fee391' :
         d > 0.00 ? '#ffffd4' :
         'rgba(0,0,0,0.0)'; // supported by Microsoft Edge?
-        //'#1C00ff00';
+      //'#1C00ff00';
     };
 
     // Add a function to style the zip codes by attorneys per thousand people (jenks)
@@ -251,7 +253,7 @@
         d > 0.62 ? '#c7e9b4' :
         d > 0.00 ? '#ffffcc' :
         'rgba(0,0,0,0.0)'; // supported by Microsoft Edge?
-        //'#1C00ff00';
+      //'#1C00ff00';
     };
 
     // load the data asynchronously
@@ -287,11 +289,12 @@
 
         onEachFeature: function(feature, layer) {
           // bind a popup window
-          layer.bindPopup('<h2><b>Zip Code: ' + feature.properties.Zip + '<br>' + 'Community: ' + feature.properties.PO_NAME + '<br>' + 'Population: ' + feature.properties.POPULATION + '<br>' + 'Attorneys: ' + feature.properties.Count + '</b></h2>' + feature.properties.popup, {
-            maxHeight: 300,
-            minWidth: 250,
-            maxWidth: 300,
-          });
+          layer.bindPopup('<h2><b>Zip Code: ' + feature.properties.Zip + '<br>' + 'Community: ' + feature.properties.PO_NAME + '<br>' + 'Population: ' + feature.properties.POPULATION + '<br>' + 'Attorneys: ' + feature.properties.Count +
+            '</b></h2>' + feature.properties.popup, {
+              maxHeight: 300,
+              minWidth: 250,
+              maxWidth: 300,
+            });
           // change layer style on mouseover
           layer.on("mouseover", function(e) {
             layer.setStyle({
@@ -334,11 +337,12 @@
 
         onEachFeature: function(feature, layer) {
           // bind a popup window
-          layer.bindPopup('<h2><b>Zip Code: ' + feature.properties.Zip + '<br>' + 'Community: ' + feature.properties.PO_NAME + '<br>' + 'Population: ' + feature.properties.POPULATION + '<br>' + 'Attorneys/1000 People: ' + feature.properties.Attys_perThousand + '</b></h2>' + feature.properties.popup, {
-            maxHeight: 300,
-            minWidth: 250,
-            maxWidth: 300,
-          });
+          layer.bindPopup('<h2><b>Zip Code: ' + feature.properties.Zip + '<br>' + 'Community: ' + feature.properties.PO_NAME + '<br>' + 'Population: ' + feature.properties.POPULATION + '<br>' + 'Attorneys/1000 People: ' + feature.properties
+            .Attys_perThousand + '</b></h2>' + feature.properties.popup, {
+              maxHeight: 300,
+              minWidth: 250,
+              maxWidth: 300,
+            });
           // change layer style on mouseover
           layer.on("mouseover", function(e) {
             layer.setStyle({
@@ -368,23 +372,33 @@
         collapsed: false,
       }).addTo(map);
 
+      // if the browser is Chrome or Safari...
+      if (L.Browser.webkit) {
+        $('.leaflet-control-layers-expanded').css({
+          'width': '199px'
+        });
+      } else if (L.Browser.ie) { // if the browser is Internet Explorer...
+        $('.leaflet-control-layers-expanded').css({
+          'width': '201px'
+        });
+      } else { // otherwise...
+        $('.leaflet-control-layers-expanded').css({
+          'width': '202px'
+        });
+      };
+
       // if the browser is Edge...
       if (L.Browser.edge) {
-        $('.leaflet-control-layers-expanded').css({ 'width': '204px'});
+        $('.leaflet-control-layers-expanded').css({
+          'width': '204px'
+        });
       }
 
       // if the browser if Safari...
       if (L.Browser.safari) {
-        $('.leaflet-control-layers-expanded').css({ 'width': '204px'});
-      };
-
-      // if the browser is Chrome or Safari...
-      if ( L.Browser.webkit ) {
-        $('.leaflet-control-layers-expanded').css({ 'width': '199px'});
-      } else if ( L.Browser.ie ) { // if the browser is Internet Explorer...
-        $('.leaflet-control-layers-expanded').css({ 'width': '201px'});
-      } else { // otherwise...
-        $('.leaflet-control-layers-expanded').css({ 'width': '202px'});
+        $('.leaflet-control-layers-expanded').css({
+          'width': '204px'
+        });
       };
 
       // create legends for both layers
@@ -620,7 +634,7 @@
 
       //add zoom control
       L.control.zoom({
-           position:'topleft'
+        position: 'topleft'
       }).addTo(map);
 
       var mapsTitle = L.control({
@@ -660,7 +674,7 @@
           stateName: 'show-info',
           icon: '<strong>?</strong>',
           title: 'Tell me about this map',
-          onClick: function(btn, map){
+          onClick: function(btn, map) {
             $("#dialog").dialog();
           }
         }]
@@ -669,7 +683,6 @@
       infoButton.addTo(map);
 
     }; // end drawMap function
-
   </script>
 </body>
 
