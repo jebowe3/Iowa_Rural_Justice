@@ -494,12 +494,19 @@
         });
       };
 
-      // if the browser is Safari or Edge...
-      if (L.Browser.safari) || (L.Browser.edge) {
+      // if the browser is Safari...
+      if (L.Browser.safari) {
         $('.leaflet-control-layers-expanded').css({
           'width': '204px'
         });
-      }
+      };
+
+      // if the browser is Edge...
+      if (L.Browser.edge) {
+        $('.leaflet-control-layers-expanded').css({
+          'width': '204px'
+        });
+      };
 
       var mapsTitle = L.control({
         position: 'topright' //place the maps window at top left corner
