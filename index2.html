@@ -387,8 +387,8 @@
         });
       };
 
-      // if the browser is Safari...
-      if (L.Browser.safari) {
+      // if the browser is Safari or Edge...
+      if (L.Browser.safari) || (L.Browser.edge) {
         $('.leaflet-control-layers-expanded').css({
           'width': '204px'
         });
