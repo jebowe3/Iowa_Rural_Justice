@@ -14,7 +14,11 @@
   <link href='https://api.mapbox.com/mapbox.js/v3.2.1/mapbox.css' rel='stylesheet' />
   <link href="https://fonts.googleapis.com/css?family=Rubik&display=swap" rel="stylesheet">
 
+  <!-- for easy buttons -->
   <link rel="stylesheet" href="src/easy-button.css">
+
+  <!-- for grouped layer control -->
+  <link rel="stylesheet" href="src/leaflet.groupedlayercontrol.css" />
 
   <style type="text/css">
     h1 {
@@ -90,7 +94,7 @@
       height: 30px;
       box-shadow: 0px 0px 0px 2px rgba(0, 0, 0, 0.3);
       position: absolute;
-      top: 105px;
+      top: 131px;
       right: 133px;
     }
 
@@ -98,7 +102,7 @@
       box-shadow: 0px 0px 0px 2px rgba(0, 0, 0, 0.3);
       position: fixed;
       z-index: 1000;
-      top: 215px;
+      top: 241px;
       right: 100px;
     }
 
@@ -106,7 +110,7 @@
       box-shadow: 0px 0px 0px 2px rgba(0, 0, 0, 0.3);
       position: fixed;
       z-index: 1000;
-      top: 215px;
+      top: 241px;
       right: 12px;
     }
 
@@ -153,11 +157,15 @@
   <!-- for button-dependent map information window -->
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
+  <!-- for easy buttons -->
   <script src="src/easy-button.js"></script>
+
+  <!-- for grouped layer control -->
+  <script src="src/leaflet.groupedlayercontrol.js"></script>
 
   <script type="text/javascript">
     // Initialize the map
-    var map = L.map('map').setView([42.05, -93.5], 8);
+    var map = L.map('map').setView([42.065, -93.500], 8);
 
     // Load tile layer
     L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
@@ -166,12 +174,34 @@
     	maxZoom: 16,
       minZoom: 7,
     }).addTo(map);
-
+/*
     // fit map to Iowa
     map.fitBounds([
       [43.50102, -90.14006],
       [40.37544, -96.63967]
     ]);
+*/
+    // if the browser is Chrome...
+    if ( L.Browser.webkit ) {
+      /*
+       * Workaround for 1px lines appearing in some browsers due to fractional transforms
+       * and resulting anti-aliasing.
+       * https://github.com/Leaflet/Leaflet/issues/3575
+       */
+      (function(){
+          var originalInitTile = L.GridLayer.prototype._initTile
+          L.GridLayer.include({
+              _initTile: function (tile) {
+                  originalInitTile.call(this, tile);
+
+                  var tileSize = this.getTileSize();
+
+                  tile.style.width = tileSize.x + 1 + 'px';
+                  tile.style.height = tileSize.y + 1 + 'px';
+              }
+          });
+      })()
+    };
 
     // add a scale bar
     L.control.scale().addTo(map); // Initialize the map
@@ -195,13 +225,13 @@
         style: function(feature) {
 
           return {
-            stroke: 0.5,
+            stroke: 1,
             color: 'grey',
-            strokeOpacity: 0.75,
-            weight: 0.5,
+            strokeOpacity: 1,
+            weight: 1,
             fillColor: 'rgba(0,0,0,0.0)',
             fillOpacity: 0.0,
-            smoothFactor: 0.99
+            //smoothFactor: 0.99
           };
         },
 
@@ -215,7 +245,7 @@
               color: 'yellow',
               weight: 3,
               opacity: 0.5,
-              smoothFactor: 0.99
+              //smoothFactor: 0.99
             });
           });
           // reset style on mouseout
@@ -231,15 +261,28 @@
 
         // style the layer
         style: function(feature) {
-          return {
-            stroke: 0.5,
-            color: '#FFFF66',
-            strokeOpacity: 0.75,
-            weight: 0.5,
-            fillColor: '#FFFF66',
-            fillOpacity: 0.5,
-            smoothFactor: 0.99
-          };
+          // if Google Chrome...
+          if ( L.Browser.webkit ) {
+            return {
+              stroke: 1,
+              color: '#FFFF66',
+              strokeOpacity: 1,
+              weight: 1,
+              fillColor: '#FFFF66',
+              fillOpacity: 0.5,
+              //smoothFactor: 0.8
+            };
+          } else {
+            return {
+              stroke: 1,
+              color: '#FFFF66',
+              strokeOpacity: 1,
+              weight: 1,
+              fillColor: '#FFFF66',
+              fillOpacity: 0.5,
+              //smoothFactor: 0.99
+            };
+          }
         },
 
         onEachFeature: function(feature, layer) {
@@ -249,13 +292,13 @@
           // change layer style on mouseover
           layer.on("mouseover", function(e) {
             layer.setStyle({
-              stroke: 1.0,
+              stroke: 1,
               color: '#FFFF00',
-              strokeOpacity: 1.0,
-              weight: 1.0,
+              strokeOpacity: 1,
+              weight: 1,
               fillColor: '#FFFF00',
               fillOpacity: 0.75,
-              smoothFactor: 0.99
+              //smoothFactor: 0.99
             });
           });
           // reset style on mouseout
@@ -265,20 +308,21 @@
 
         }
 
-      }).addTo(map); // add the layer to the map
+      });
+      //}).addTo(map); // add the layer to the map
 
       var iowaOmbUrban = L.geoJson(omburban, {
 
         // style the layer
         style: function(feature) {
           return {
-            stroke: 0.5,
+            stroke: 1,
             color: '#87CEFA',
-            strokeOpacity: 0.75,
-            weight: 0.5,
+            strokeOpacity: 1,
+            weight: 1,
             fillColor: '#87CEFA',
             fillOpacity: 0.5,
-            smoothFactor: 0.99
+            //smoothFactor: 0.99
           };
         },
 
@@ -289,13 +333,13 @@
           // change layer style on mouseover
           layer.on("mouseover", function(e) {
             layer.setStyle({
-              stroke: 0.5,
+              stroke: 1,
               color: '#4169E1',
-              strokeOpacity: 0.75,
-              weight: 0.5,
+              strokeOpacity: 1,
+              weight: 1,
               fillColor: '#4169E1',
               fillOpacity: 0.5,
-              smoothFactor: 0.99
+              //smoothFactor: 0.99
             });
           });
           // reset style on mouseout
@@ -311,15 +355,30 @@
 
         // style the layer
         style: function(feature) {
-          return {
-            stroke: 0.5,
-            color: '#FFFF66',
-            strokeOpacity: 0.75,
-            weight: 0.5,
-            fillColor: '#FFFF66',
-            fillOpacity: 0.5,
-            smoothFactor: 0.99
-          };
+          // if Google Chrome...
+          if ( L.Browser.webkit ) {
+            return {
+              stroke: 1,
+              color: '#FFFF66',
+              strokeOpacity: 1,
+              weight: 1,
+              fillColor: '#FFFF66',
+              fillOpacity: 0.5,
+              //smoothFactor: 0.0
+              //fillColor: 'rgba(0,0,0,0.0)'
+            };
+          } else {
+            return {
+              stroke: 1,
+              color: '#FFFF66',
+              strokeOpacity: 1,
+              weight: 1,
+              fillColor: '#FFFF66',
+              fillOpacity: 0.5,
+              //smoothFactor: 0.99
+            };
+          }
+
         },
 
         onEachFeature: function(feature, layer) {
@@ -330,13 +389,13 @@
           // change layer style on mouseover
           layer.on("mouseover", function(e) {
             layer.setStyle({
-              stroke: 1.0,
+              stroke: 1,
               color: '#FFFF00',
-              strokeOpacity: 1.0,
-              weight: 1.0,
+              strokeOpacity: 1,
+              weight: 1,
               fillColor: '#FFFF00',
               fillOpacity: 0.75,
-              smoothFactor: 0.99
+              //smoothFactor: 0.99
             });
           });
           // reset style on mouseout
@@ -353,13 +412,13 @@
         // style the layer
         style: function(feature) {
           return {
-            stroke: 0.5,
+            stroke: 1,
             color: '#87CEFA',
-            strokeOpacity: 0.75,
-            weight: 0.5,
+            strokeOpacity: 1,
+            weight: 1,
             fillColor: '#87CEFA',
             fillOpacity: 0.5,
-            smoothFactor: 0.99
+            //smoothFactor: 0.99
           };
         },
 
@@ -370,13 +429,13 @@
           // change layer style on mouseover
           layer.on("mouseover", function(e) {
             layer.setStyle({
-              stroke: 0.5,
+              stroke: 1,
               color: '#4169E1',
-              strokeOpacity: 0.75,
-              weight: 0.5,
+              strokeOpacity: 1,
+              weight: 1,
               fillColor: '#4169E1',
               fillOpacity: 0.5,
-              smoothFactor: 0.99
+              //smoothFactor: 0.99
             });
           });
           // reset style on mouseout
@@ -388,26 +447,53 @@
 
       }); // end USCensusUrban
 
-      // designate the layers as baselayers (allows only one open at a time)
-      var baselayers = {
-        "OMB Rural Areas": iowaOmbRural,
-        "US Census Rural Areas": USCensusRural,
-        "OMB Urban Areas": iowaOmbUrban,
-        "US Census Urban Areas": USCensusUrban,
+      var baseMaps = {
+        "Iowa Counties": iowaCounties,
+      }
+
+      // designate the layers as grouped overlays
+      var groupedOverlays = {
+        "Layers":{ // give each layer a name
+          "OMB Rural Areas": iowaOmbRural,
+          "US Census Rural Areas": USCensusRural,
+          "OMB Urban Areas": iowaOmbUrban,
+          "US Census Urban Areas": USCensusUrban,
+        }
       };
 
+      // define options for the layer controls
+      var options = {
+        exclusiveGroups: ["Layers"],
+        groupCheckboxes: true,
+        collapsed: false,
+      };
+
+      // define the layer controls and send the grouped layers to it
+      var layerControl = L.control.groupedLayers(null, groupedOverlays, options);
+
+      // add the layer controls to the map
+      map.addControl(layerControl);
+/*
       // all done with the layers, add them to layer control
-      L.control.layers(baselayers, null, {
+      L.control.layers(null, baselayers, {
         collapsed: false,
       }).addTo(map);
+*/
+      // if the browser is Edge...
+      if (L.Browser.edge) {
+        $('.leaflet-control-layers-expanded').css({ 'width': '204px'});
+      }
 
+      // if the browser if Safari...
+      if (L.Browser.safari) {
+        $('.leaflet-control-layers-expanded').css({ 'width': '204px'});
+      };
+      
       // if the browser is Chrome or Safari...
       if ( L.Browser.webkit ) {
         $('.leaflet-control-layers-expanded').css({ 'width': '199px'});
       } else if ( L.Browser.ie ) { // if the browser is Internet Explorer...
         $('.leaflet-control-layers-expanded').css({ 'width': '201px'});
-      } else if (L.Browser.edge) { // if the browser is Microsoft Edge...
-        $('.leaflet-control-layers-expanded').css({ 'width': '207px'});
       } else { // otherwise...
         $('.leaflet-control-layers-expanded').css({ 'width': '202px'});
       };
