@@ -495,18 +495,11 @@
       };
 
       // if the browser is Edge...
-      if (L.Browser.edge) {
+      if (L.Browser.edge || L.Browser.safari) {
         $('.leaflet-control-layers-expanded').css({
           'width': '204px'
         });
       }
-
-      // if the browser if Safari...
-      if (L.Browser.safari) {
-        $('.leaflet-control-layers-expanded').css({
-          'width': '204px'
-        });
-      };
 
       var mapsTitle = L.control({
         position: 'topright' //place the maps window at top left corner

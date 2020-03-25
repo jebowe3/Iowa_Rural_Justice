@@ -372,7 +372,7 @@
         collapsed: false,
       }).addTo(map);
 
-      // if the browser is Chrome or Safari...
+      // if the browser is Chrome...
       if (L.Browser.webkit) {
         $('.leaflet-control-layers-expanded').css({
           'width': '199px'
@@ -388,18 +388,11 @@
       };
 
       // if the browser is Edge...
-      if (L.Browser.edge) {
+      if (L.Browser.edge || L.Browser.safari) {
         $('.leaflet-control-layers-expanded').css({
           'width': '204px'
         });
       }
-
-      // if the browser if Safari...
-      if (L.Browser.safari) {
-        $('.leaflet-control-layers-expanded').css({
-          'width': '204px'
-        });
-      };
 
       // create legends for both layers
       var zipLegend = L.control({
