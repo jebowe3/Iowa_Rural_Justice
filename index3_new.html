@@ -2278,26 +2278,6 @@
             .removeControl(rentLegend).removeControl(vetLegend)
             .removeControl(foreignLegend).removeControl(uninsuredLegend);
         singleLegend.addTo(this);
-      } if (eventLayer.name === 'Turn Off ILA Call Layers') {
-        this.removeControl(consumerLegend).removeControl(employLegend)
-            .removeControl(educationLegend).removeControl(famLegend)
-            .removeControl(minorLegend).removeControl(healthLegend)
-            .removeControl(housingLegend).removeControl(benefitsLegend)
-            .removeControl(individualLegend).removeControl(miscLegend)
-            .removeControl(fampovLegend).removeControl(giniLegend)
-            .removeControl(rentLegend).removeControl(vetLegend)
-            .removeControl(foreignLegend).removeControl(singleLegend)
-            .removeControl(uninsuredLegend);
-      } if (eventLayer.name === 'Turn Off ACS Layers') {
-        this.removeControl(consumerLegend).removeControl(employLegend)
-            .removeControl(educationLegend).removeControl(famLegend)
-            .removeControl(minorLegend).removeControl(healthLegend)
-            .removeControl(housingLegend).removeControl(benefitsLegend)
-            .removeControl(individualLegend).removeControl(miscLegend)
-            .removeControl(fampovLegend).removeControl(giniLegend)
-            .removeControl(rentLegend).removeControl(vetLegend)
-            .removeControl(foreignLegend).removeControl(singleLegend)
-            .removeControl(uninsuredLegend);
       }
     });
 
@@ -2365,271 +2345,191 @@
                        data[6].Perc_Children_Single_Parents, data[7].Perc_Children_Single_Parents,
                        data[8].Perc_Children_Single_Parents, data[9].Perc_Children_Single_Parents
                       );
-        // when the user changes the baselayer, switch the legend
-        map.on('overlayadd', function(eventLayer) {
 
-          if (eventLayer.name === '% of Families in Poverty') {
+        if (eventLayer.name === '% of Families in Poverty') {
 
-            // hide the info window by adding back the 'none' class
-            $('#pearsoninfo').addClass('none').show
+          // remove the none class to display the element
+          $('#pearsoninfo').removeClass('none').show();
 
-            // remove the none class to display the element
-            $('#pearsoninfo').removeClass('none').show();
+          // populate our info window HTML elements with the relevant information using jQuery
+          $('#pearsoninfo span').html('For percent of families in poverty,');
+          $(".Head span").html("the Pearson correlation coefficient is: ");
+          $(".consumer span").html(data[0].Families_Below_Poverty_Perc.toFixed(2) + ' with Consumer Protection Calls');
+          $(".education span").html(data[1].Families_Below_Poverty_Perc.toFixed(2) + ' with Education Calls');
+          $(".employment span").html(data[2].Families_Below_Poverty_Perc.toFixed(2) + ' with Employment Calls');
+          $(".family span").html(data[3].Families_Below_Poverty_Perc.toFixed(2) + ' with Family Calls');
+          $(".minors span").html(data[4].Families_Below_Poverty_Perc.toFixed(2) + ' with Minors Calls');
+          $(".health span").html(data[5].Families_Below_Poverty_Perc.toFixed(2) + ' with Health Calls');
+          $(".housing span").html(data[6].Families_Below_Poverty_Perc.toFixed(2) + ' with Housing Calls');
+          $(".benefits span").html(data[7].Families_Below_Poverty_Perc.toFixed(2) + ' with Benefits Calls');
+          $(".individual span").html(data[8].Families_Below_Poverty_Perc.toFixed(2) + ' with Individual Rights Calls');
+          $(".miscellaneous span").html(data[9].Families_Below_Poverty_Perc.toFixed(2) + ' with Misc/Other Calls');
+          $(".pearsonspark").sparkline(famArray, {
+            type: 'bar',
+            height: '10.0em',
+            barWidth: '12.0em',
+            colorMap: ['#ff0000', '#ff7700', '#ffff00', '#77ff00', '#00ffff', '#0000ff', '#7700ff', '#ff00ff', '#ff0077', '#C0C0C0'],
+          });
 
-            // populate our info window HTML elements with the relevant information using jQuery
-            $('#pearsoninfo span').html('For percent of families in poverty,');
-            $(".Head span").html("the Pearson correlation coefficient is: ");
-            $(".consumer span").html(data[0].Families_Below_Poverty_Perc.toFixed(2) + ' with Consumer Protection Calls');
-            $(".education span").html(data[1].Families_Below_Poverty_Perc.toFixed(2) + ' with Education Calls');
-            $(".employment span").html(data[2].Families_Below_Poverty_Perc.toFixed(2) + ' with Employment Calls');
-            $(".family span").html(data[3].Families_Below_Poverty_Perc.toFixed(2) + ' with Family Calls');
-            $(".minors span").html(data[4].Families_Below_Poverty_Perc.toFixed(2) + ' with Minors Calls');
-            $(".health span").html(data[5].Families_Below_Poverty_Perc.toFixed(2) + ' with Health Calls');
-            $(".housing span").html(data[6].Families_Below_Poverty_Perc.toFixed(2) + ' with Housing Calls');
-            $(".benefits span").html(data[7].Families_Below_Poverty_Perc.toFixed(2) + ' with Benefits Calls');
-            $(".individual span").html(data[8].Families_Below_Poverty_Perc.toFixed(2) + ' with Individual Rights Calls');
-            $(".miscellaneous span").html(data[9].Families_Below_Poverty_Perc.toFixed(2) + ' with Misc/Other Calls');
-            $(".pearsonspark").sparkline(famArray, {
-              type: 'bar',
-              height: '10.0em',
-              barWidth: '12.0em',
-              colorMap: ['#ff0000', '#ff7700', '#ffff00', '#77ff00', '#00ffff', '#0000ff', '#7700ff', '#ff00ff', '#ff0077', '#C0C0C0'],
-            });
+        } if (eventLayer.name === 'Gini Coefficient') {
 
-          } if (eventLayer.name === 'Gini Coefficient') {
+          // remove the none class to display the element
+          $('#pearsoninfo').removeClass('none').show();
 
-            // hide the info window by adding back the 'none' class
-            $('#pearsoninfo').addClass('none').show
+          // populate our info window HTML elements with the relevant information using jQuery
+          $('#pearsoninfo span').html('For the Gini coefficient,');
+          $(".Head span").html("the Pearson correlation coefficient is: ");
+          $(".consumer span").html(data[0].Gini_Index.toFixed(2) + ' with Consumer Protection Calls');
+          $(".education span").html(data[1].Gini_Index.toFixed(2) + ' with Education Calls');
+          $(".employment span").html(data[2].Gini_Index.toFixed(2) + ' with Employment Calls');
+          $(".family span").html(data[3].Gini_Index.toFixed(2) + ' with Family Calls');
+          $(".minors span").html(data[4].Gini_Index.toFixed(2) + ' with Minors Calls');
+          $(".health span").html(data[5].Gini_Index.toFixed(2) + ' with Health Calls');
+          $(".housing span").html(data[6].Gini_Index.toFixed(2) + ' with Housing Calls');
+          $(".benefits span").html(data[7].Gini_Index.toFixed(2) + ' with Benefits Calls');
+          $(".individual span").html(data[8].Gini_Index.toFixed(2) + ' with Individual Rights Calls');
+          $(".miscellaneous span").html(data[9].Gini_Index.toFixed(2) + ' with Misc/Other Calls');
+          $(".pearsonspark").sparkline(giniArray, {
+            type: 'bar',
+            height: '10.0em',
+            barWidth: '12.0em',
+            colorMap: ['#ff0000', '#ff7700', '#ffff00', '#77ff00', '#00ffff', '#0000ff', '#7700ff', '#ff00ff', '#ff0077', '#C0C0C0'],
+          });
 
-            // remove the none class to display the element
-            $('#pearsoninfo').removeClass('none').show();
+        } if (eventLayer.name === '% Households w/ Rent > 50% of Income') {
 
-            // populate our info window HTML elements with the relevant information using jQuery
-            $('#pearsoninfo span').html('For the Gini coefficient,');
-            $(".Head span").html("the Pearson correlation coefficient is: ");
-            $(".consumer span").html(data[0].Gini_Index.toFixed(2) + ' with Consumer Protection Calls');
-            $(".education span").html(data[1].Gini_Index.toFixed(2) + ' with Education Calls');
-            $(".employment span").html(data[2].Gini_Index.toFixed(2) + ' with Employment Calls');
-            $(".family span").html(data[3].Gini_Index.toFixed(2) + ' with Family Calls');
-            $(".minors span").html(data[4].Gini_Index.toFixed(2) + ' with Minors Calls');
-            $(".health span").html(data[5].Gini_Index.toFixed(2) + ' with Health Calls');
-            $(".housing span").html(data[6].Gini_Index.toFixed(2) + ' with Housing Calls');
-            $(".benefits span").html(data[7].Gini_Index.toFixed(2) + ' with Benefits Calls');
-            $(".individual span").html(data[8].Gini_Index.toFixed(2) + ' with Individual Rights Calls');
-            $(".miscellaneous span").html(data[9].Gini_Index.toFixed(2) + ' with Misc/Other Calls');
-            $(".pearsonspark").sparkline(giniArray, {
-              type: 'bar',
-              height: '10.0em',
-              barWidth: '12.0em',
-              colorMap: ['#ff0000', '#ff7700', '#ffff00', '#77ff00', '#00ffff', '#0000ff', '#7700ff', '#ff00ff', '#ff0077', '#C0C0C0'],
-            });
+          // remove the none class to display the element
+          $('#pearsoninfo').removeClass('none').show();
 
-          } if (eventLayer.name === '% Households w/ Rent > 50% of Income') {
+          // populate our info window HTML elements with the relevant information using jQuery
+          $('#pearsoninfo span').html('For households with rent > 50% of income,');
+          $(".Head span").html("the Pearson correlation coefficient is: ");
+          $(".consumer span").html(data[0].Perc_Households_Rent_50Perc_Income.toFixed(2) + ' with Consumer Protection Calls');
+          $(".education span").html(data[1].Perc_Households_Rent_50Perc_Income.toFixed(2) + ' with Education Calls');
+          $(".employment span").html(data[2].Perc_Households_Rent_50Perc_Income.toFixed(2) + ' with Employment Calls');
+          $(".family span").html(data[3].Perc_Households_Rent_50Perc_Income.toFixed(2) + ' with Family Calls');
+          $(".minors span").html(data[4].Perc_Households_Rent_50Perc_Income.toFixed(2) + ' with Minors Calls');
+          $(".health span").html(data[5].Perc_Households_Rent_50Perc_Income.toFixed(2) + ' with Health Calls');
+          $(".housing span").html(data[6].Perc_Households_Rent_50Perc_Income.toFixed(2) + ' with Housing Calls');
+          $(".benefits span").html(data[7].Perc_Households_Rent_50Perc_Income.toFixed(2) + ' with Benefits Calls');
+          $(".individual span").html(data[8].Perc_Households_Rent_50Perc_Income.toFixed(2) + ' with Individual Rights Calls');
+          $(".miscellaneous span").html(data[9].Perc_Households_Rent_50Perc_Income.toFixed(2) + ' with Misc/Other Calls');
+          $(".pearsonspark").sparkline(rentArray, {
+            type: 'bar',
+            height: '10.0em',
+            barWidth: '12.0em',
+            colorMap: ['#ff0000', '#ff7700', '#ffff00', '#77ff00', '#00ffff', '#0000ff', '#7700ff', '#ff00ff', '#ff0077', '#C0C0C0'],
+          });
 
-            // hide the info window by adding back the 'none' class
-            $('#pearsoninfo').addClass('none').show
+        } if (eventLayer.name === '% of Adults who are Veterans') {
 
-            // remove the none class to display the element
-            $('#pearsoninfo').removeClass('none').show();
+          // remove the none class to display the element
+          $('#pearsoninfo').removeClass('none').show();
 
-            // populate our info window HTML elements with the relevant information using jQuery
-            $('#pearsoninfo span').html('For households with rent > 50% of income,');
-            $(".Head span").html("the Pearson correlation coefficient is: ");
-            $(".consumer span").html(data[0].Perc_Households_Rent_50Perc_Income.toFixed(2) + ' with Consumer Protection Calls');
-            $(".education span").html(data[1].Perc_Households_Rent_50Perc_Income.toFixed(2) + ' with Education Calls');
-            $(".employment span").html(data[2].Perc_Households_Rent_50Perc_Income.toFixed(2) + ' with Employment Calls');
-            $(".family span").html(data[3].Perc_Households_Rent_50Perc_Income.toFixed(2) + ' with Family Calls');
-            $(".minors span").html(data[4].Perc_Households_Rent_50Perc_Income.toFixed(2) + ' with Minors Calls');
-            $(".health span").html(data[5].Perc_Households_Rent_50Perc_Income.toFixed(2) + ' with Health Calls');
-            $(".housing span").html(data[6].Perc_Households_Rent_50Perc_Income.toFixed(2) + ' with Housing Calls');
-            $(".benefits span").html(data[7].Perc_Households_Rent_50Perc_Income.toFixed(2) + ' with Benefits Calls');
-            $(".individual span").html(data[8].Perc_Households_Rent_50Perc_Income.toFixed(2) + ' with Individual Rights Calls');
-            $(".miscellaneous span").html(data[9].Perc_Households_Rent_50Perc_Income.toFixed(2) + ' with Misc/Other Calls');
-            $(".pearsonspark").sparkline(rentArray, {
-              type: 'bar',
-              height: '10.0em',
-              barWidth: '12.0em',
-              colorMap: ['#ff0000', '#ff7700', '#ffff00', '#77ff00', '#00ffff', '#0000ff', '#7700ff', '#ff00ff', '#ff0077', '#C0C0C0'],
-            });
+          // populate our info window HTML elements with the relevant information using jQuery
+          $('#pearsoninfo span').html('For percent of adults who are veterans,');
+          $(".Head span").html("the Pearson correlation coefficient is: ");
+          $(".consumer span").html(data[0].Perc_Veteran.toFixed(2) + ' with Consumer Protection Calls');
+          $(".education span").html(data[1].Perc_Veteran.toFixed(2) + ' with Education Calls');
+          $(".employment span").html(data[2].Perc_Veteran.toFixed(2) + ' with Employment Calls');
+          $(".family span").html(data[3].Perc_Veteran.toFixed(2) + ' with Family Calls');
+          $(".minors span").html(data[4].Perc_Veteran.toFixed(2) + ' with Minors Calls');
+          $(".health span").html(data[5].Perc_Veteran.toFixed(2) + ' with Health Calls');
+          $(".housing span").html(data[6].Perc_Veteran.toFixed(2) + ' with Housing Calls');
+          $(".benefits span").html(data[7].Perc_Veteran.toFixed(2) + ' with Benefits Calls');
+          $(".individual span").html(data[8].Perc_Veteran.toFixed(2) + ' with Individual Rights Calls');
+          $(".miscellaneous span").html(data[9].Perc_Veteran.toFixed(2) + ' with Misc/Other Calls');
+          $(".pearsonspark").sparkline(vetArray, {
+            type: 'bar',
+            height: '10.0em',
+            barWidth: '12.0em',
+            colorMap: ['#ff0000', '#ff7700', '#ffff00', '#77ff00', '#00ffff', '#0000ff', '#7700ff', '#ff00ff', '#ff0077', '#C0C0C0'],
+          });
 
-          } if (eventLayer.name === '% of Adults who are Veterans') {
+        } if (eventLayer.name === '% Foreign Born') {
 
-            // hide the info window by adding back the 'none' class
-            $('#pearsoninfo').addClass('none').show
+          // remove the none class to display the element
+          $('#pearsoninfo').removeClass('none').show();
 
-            // remove the none class to display the element
-            $('#pearsoninfo').removeClass('none').show();
+          // populate our info window HTML elements with the relevant information using jQuery
+          $('#pearsoninfo span').html('For percent foreign born,');
+          $(".Head span").html("the Pearson correlation coefficient is: ");
+          $(".consumer span").html(data[0].Perc_Foreign_Born.toFixed(2) + ' with Consumer Protection Calls');
+          $(".education span").html(data[1].Perc_Foreign_Born.toFixed(2) + ' with Education Calls');
+          $(".employment span").html(data[2].Perc_Foreign_Born.toFixed(2) + ' with Employment Calls');
+          $(".family span").html(data[3].Perc_Foreign_Born.toFixed(2) + ' with Family Calls');
+          $(".minors span").html(data[4].Perc_Foreign_Born.toFixed(2) + ' with Minors Calls');
+          $(".health span").html(data[5].Perc_Foreign_Born.toFixed(2) + ' with Health Calls');
+          $(".housing span").html(data[6].Perc_Foreign_Born.toFixed(2) + ' with Housing Calls');
+          $(".benefits span").html(data[7].Perc_Foreign_Born.toFixed(2) + ' with Benefits Calls');
+          $(".individual span").html(data[8].Perc_Foreign_Born.toFixed(2) + ' with Individual Rights Calls');
+          $(".miscellaneous span").html(data[9].Perc_Foreign_Born.toFixed(2) + ' with Misc/Other Calls');
+          $(".pearsonspark").sparkline(foreignArray, {
+            type: 'bar',
+            height: '10.0em',
+            barWidth: '12.0em',
+            colorMap: ['#ff0000', '#ff7700', '#ffff00', '#77ff00', '#00ffff', '#0000ff', '#7700ff', '#ff00ff', '#ff0077', '#C0C0C0'],
+          });
 
-            // populate our info window HTML elements with the relevant information using jQuery
-            $('#pearsoninfo span').html('For percent of adults who are veterans,');
-            $(".Head span").html("the Pearson correlation coefficient is: ");
-            $(".consumer span").html(data[0].Perc_Veteran.toFixed(2) + ' with Consumer Protection Calls');
-            $(".education span").html(data[1].Perc_Veteran.toFixed(2) + ' with Education Calls');
-            $(".employment span").html(data[2].Perc_Veteran.toFixed(2) + ' with Employment Calls');
-            $(".family span").html(data[3].Perc_Veteran.toFixed(2) + ' with Family Calls');
-            $(".minors span").html(data[4].Perc_Veteran.toFixed(2) + ' with Minors Calls');
-            $(".health span").html(data[5].Perc_Veteran.toFixed(2) + ' with Health Calls');
-            $(".housing span").html(data[6].Perc_Veteran.toFixed(2) + ' with Housing Calls');
-            $(".benefits span").html(data[7].Perc_Veteran.toFixed(2) + ' with Benefits Calls');
-            $(".individual span").html(data[8].Perc_Veteran.toFixed(2) + ' with Individual Rights Calls');
-            $(".miscellaneous span").html(data[9].Perc_Veteran.toFixed(2) + ' with Misc/Other Calls');
-            $(".pearsonspark").sparkline(vetArray, {
-              type: 'bar',
-              height: '10.0em',
-              barWidth: '12.0em',
-              colorMap: ['#ff0000', '#ff7700', '#ffff00', '#77ff00', '#00ffff', '#0000ff', '#7700ff', '#ff00ff', '#ff0077', '#C0C0C0'],
-            });
+        } if (eventLayer.name === '% Without Health Insurance') {
 
-          } if (eventLayer.name === '% Foreign Born') {
+          // remove the none class to display the element
+          $('#pearsoninfo').removeClass('none').show();
 
-            // hide the info window by adding back the 'none' class
-            $('#pearsoninfo').addClass('none').show
+          // populate our info window HTML elements with the relevant information using jQuery
+          $('#pearsoninfo span').html('For percent of children in single-parent homes,');
+          $(".Head span").html("the Pearson correlation coefficient is: ");
+          $(".consumer span").html(data[0].Perc_Uninsured.toFixed(2) + ' with Consumer Protection Calls');
+          $(".education span").html(data[1].Perc_Uninsured.toFixed(2) + ' with Education Calls');
+          $(".employment span").html(data[2].Perc_Uninsured.toFixed(2) + ' with Employment Calls');
+          $(".family span").html(data[3].Perc_Uninsured.toFixed(2) + ' with Family Calls');
+          $(".minors span").html(data[4].Perc_Uninsured.toFixed(2) + ' with Minors Calls');
+          $(".health span").html(data[5].Perc_Uninsured.toFixed(2) + ' with Health Calls');
+          $(".housing span").html(data[6].Perc_Uninsured.toFixed(2) + ' with Housing Calls');
+          $(".benefits span").html(data[7].Perc_Uninsured.toFixed(2) + ' with Benefits Calls');
+          $(".individual span").html(data[8].Perc_Uninsured.toFixed(2) + ' with Individual Rights Calls');
+          $(".miscellaneous span").html(data[9].Perc_Uninsured.toFixed(2) + ' with Misc/Other Calls');
+          $(".pearsonspark").sparkline(uninsuredArray, {
+            type: 'bar',
+            height: '10.0em',
+            barWidth: '12.0em',
+            colorMap: ['#ff0000', '#ff7700', '#ffff00', '#77ff00', '#00ffff', '#0000ff', '#7700ff', '#ff00ff', '#ff0077', '#C0C0C0'],
+          });
 
-            // remove the none class to display the element
-            $('#pearsoninfo').removeClass('none').show();
+        } if (eventLayer.name === '% of Children in Single-Parent Homes') {
 
-            // populate our info window HTML elements with the relevant information using jQuery
-            $('#pearsoninfo span').html('For percent foreign born,');
-            $(".Head span").html("the Pearson correlation coefficient is: ");
-            $(".consumer span").html(data[0].Perc_Foreign_Born.toFixed(2) + ' with Consumer Protection Calls');
-            $(".education span").html(data[1].Perc_Foreign_Born.toFixed(2) + ' with Education Calls');
-            $(".employment span").html(data[2].Perc_Foreign_Born.toFixed(2) + ' with Employment Calls');
-            $(".family span").html(data[3].Perc_Foreign_Born.toFixed(2) + ' with Family Calls');
-            $(".minors span").html(data[4].Perc_Foreign_Born.toFixed(2) + ' with Minors Calls');
-            $(".health span").html(data[5].Perc_Foreign_Born.toFixed(2) + ' with Health Calls');
-            $(".housing span").html(data[6].Perc_Foreign_Born.toFixed(2) + ' with Housing Calls');
-            $(".benefits span").html(data[7].Perc_Foreign_Born.toFixed(2) + ' with Benefits Calls');
-            $(".individual span").html(data[8].Perc_Foreign_Born.toFixed(2) + ' with Individual Rights Calls');
-            $(".miscellaneous span").html(data[9].Perc_Foreign_Born.toFixed(2) + ' with Misc/Other Calls');
-            $(".pearsonspark").sparkline(foreignArray, {
-              type: 'bar',
-              height: '10.0em',
-              barWidth: '12.0em',
-              colorMap: ['#ff0000', '#ff7700', '#ffff00', '#77ff00', '#00ffff', '#0000ff', '#7700ff', '#ff00ff', '#ff0077', '#C0C0C0'],
-            });
+          // remove the none class to display the element
+          $('#pearsoninfo').removeClass('none').show();
 
-          } if (eventLayer.name === '% Without Health Insurance') {
+          // populate our info window HTML elements with the relevant information using jQuery
+          $('#pearsoninfo span').html('For percent of children in single-parent homes,');
+          $(".Head span").html("the Pearson correlation coefficient is: ");
+          $(".consumer span").html(data[0].Perc_Children_Single_Parents.toFixed(2) + ' with Consumer Protection Calls');
+          $(".education span").html(data[1].Perc_Children_Single_Parents.toFixed(2) + ' with Education Calls');
+          $(".employment span").html(data[2].Perc_Children_Single_Parents.toFixed(2) + ' with Employment Calls');
+          $(".family span").html(data[3].Perc_Children_Single_Parents.toFixed(2) + ' with Family Calls');
+          $(".minors span").html(data[4].Perc_Children_Single_Parents.toFixed(2) + ' with Minors Calls');
+          $(".health span").html(data[5].Perc_Children_Single_Parents.toFixed(2) + ' with Health Calls');
+          $(".housing span").html(data[6].Perc_Children_Single_Parents.toFixed(2) + ' with Housing Calls');
+          $(".benefits span").html(data[7].Perc_Children_Single_Parents.toFixed(2) + ' with Benefits Calls');
+          $(".individual span").html(data[8].Perc_Children_Single_Parents.toFixed(2) + ' with Individual Rights Calls');
+          $(".miscellaneous span").html(data[9].Perc_Children_Single_Parents.toFixed(2) + ' with Misc/Other Calls');
+          $(".pearsonspark").sparkline(singleArray, {
+            type: 'bar',
+            height: '10.0em',
+            barWidth: '12.0em',
+            colorMap: ['#ff0000', '#ff7700', '#ffff00', '#77ff00', '#00ffff', '#0000ff', '#7700ff', '#ff00ff', '#ff0077', '#C0C0C0'],
+          });
 
-            // hide the info window by adding back the 'none' class
-            $('#pearsoninfo').addClass('none').show
+        } else {
 
-            // remove the none class to display the element
-            $('#pearsoninfo').removeClass('none').show();
+          // hide the info window by adding back the 'none' class
+          $('#pearsoninfo').addClass('none').show
 
-            // populate our info window HTML elements with the relevant information using jQuery
-            $('#pearsoninfo span').html('For percent of children in single-parent homes,');
-            $(".Head span").html("the Pearson correlation coefficient is: ");
-            $(".consumer span").html(data[0].Perc_Uninsured.toFixed(2) + ' with Consumer Protection Calls');
-            $(".education span").html(data[1].Perc_Uninsured.toFixed(2) + ' with Education Calls');
-            $(".employment span").html(data[2].Perc_Uninsured.toFixed(2) + ' with Employment Calls');
-            $(".family span").html(data[3].Perc_Uninsured.toFixed(2) + ' with Family Calls');
-            $(".minors span").html(data[4].Perc_Uninsured.toFixed(2) + ' with Minors Calls');
-            $(".health span").html(data[5].Perc_Uninsured.toFixed(2) + ' with Health Calls');
-            $(".housing span").html(data[6].Perc_Uninsured.toFixed(2) + ' with Housing Calls');
-            $(".benefits span").html(data[7].Perc_Uninsured.toFixed(2) + ' with Benefits Calls');
-            $(".individual span").html(data[8].Perc_Uninsured.toFixed(2) + ' with Individual Rights Calls');
-            $(".miscellaneous span").html(data[9].Perc_Uninsured.toFixed(2) + ' with Misc/Other Calls');
-            $(".pearsonspark").sparkline(uninsuredArray, {
-              type: 'bar',
-              height: '10.0em',
-              barWidth: '12.0em',
-              colorMap: ['#ff0000', '#ff7700', '#ffff00', '#77ff00', '#00ffff', '#0000ff', '#7700ff', '#ff00ff', '#ff0077', '#C0C0C0'],
-            });
-
-          } if (eventLayer.name === '% of Children in Single-Parent Homes') {
-
-            // hide the info window by adding back the 'none' class
-            $('#pearsoninfo').addClass('none').show
-
-            // remove the none class to display the element
-            $('#pearsoninfo').removeClass('none').show();
-
-            // populate our info window HTML elements with the relevant information using jQuery
-            $('#pearsoninfo span').html('For percent of children in single-parent homes,');
-            $(".Head span").html("the Pearson correlation coefficient is: ");
-            $(".consumer span").html(data[0].Perc_Children_Single_Parents.toFixed(2) + ' with Consumer Protection Calls');
-            $(".education span").html(data[1].Perc_Children_Single_Parents.toFixed(2) + ' with Education Calls');
-            $(".employment span").html(data[2].Perc_Children_Single_Parents.toFixed(2) + ' with Employment Calls');
-            $(".family span").html(data[3].Perc_Children_Single_Parents.toFixed(2) + ' with Family Calls');
-            $(".minors span").html(data[4].Perc_Children_Single_Parents.toFixed(2) + ' with Minors Calls');
-            $(".health span").html(data[5].Perc_Children_Single_Parents.toFixed(2) + ' with Health Calls');
-            $(".housing span").html(data[6].Perc_Children_Single_Parents.toFixed(2) + ' with Housing Calls');
-            $(".benefits span").html(data[7].Perc_Children_Single_Parents.toFixed(2) + ' with Benefits Calls');
-            $(".individual span").html(data[8].Perc_Children_Single_Parents.toFixed(2) + ' with Individual Rights Calls');
-            $(".miscellaneous span").html(data[9].Perc_Children_Single_Parents.toFixed(2) + ' with Misc/Other Calls');
-            $(".pearsonspark").sparkline(singleArray, {
-              type: 'bar',
-              height: '10.0em',
-              barWidth: '12.0em',
-              colorMap: ['#ff0000', '#ff7700', '#ffff00', '#77ff00', '#00ffff', '#0000ff', '#7700ff', '#ff00ff', '#ff0077', '#C0C0C0'],
-            });
-
-          } if (eventLayer.name === '% of Calls for Consumer Protection') {
-
-            // hide the info window by adding back the 'none' class
-            $('#pearsoninfo').addClass('none').show
-
-          } if (eventLayer.name === '% of Calls for Education') {
-
-            // hide the info window by adding back the 'none' class
-            $('#pearsoninfo').addClass('none').show
-
-          } if (eventLayer.name === '% of Calls for Employment/Tax') {
-
-            // hide the info window by adding back the 'none' class
-            $('#pearsoninfo').addClass('none').show
-
-          } if (eventLayer.name === '% of Calls for Family') {
-
-            // hide the info window by adding back the 'none' class
-            $('#pearsoninfo').addClass('none').show
-
-          } if (eventLayer.name === '% of Calls for Minors') {
-
-            // hide the info window by adding back the 'none' class
-            $('#pearsoninfo').addClass('none').show
-
-          } if (eventLayer.name === '% of Calls for Health') {
-
-            // hide the info window by adding back the 'none' class
-            $('#pearsoninfo').addClass('none').show
-
-          } if (eventLayer.name === '% of Calls for Housing') {
-
-            // hide the info window by adding back the 'none' class
-            $('#pearsoninfo').addClass('none').show
-
-          } if (eventLayer.name === '% of Calls for Benefits') {
-
-            // hide the info window by adding back the 'none' class
-            $('#pearsoninfo').addClass('none').show
-
-          } if (eventLayer.name === '% of Calls for Individual Rights') {
-
-            // hide the info window by adding back the 'none' class
-            $('#pearsoninfo').addClass('none').show
-
-          } if (eventLayer.name === '% of Calls for Miscellaneous/Other') {
-
-            // hide the info window by adding back the 'none' class
-            $('#pearsoninfo').addClass('none').show
-
-          } if (eventLayer.name === 'Turn Off ILA Call Layers') {
-
-            // hide the info window by adding back the 'none' class
-            $('#pearsoninfo').addClass('none').show
-
-          } if (eventLayer.name === 'Turn Off ACS Layers') {
-
-            // hide the info window by adding back the 'none' class
-            $('#pearsoninfo').addClass('none').show
-
-          };
-
-        });
+        };
 
       }
-
+      
     });
 
   </script>
