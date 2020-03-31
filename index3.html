@@ -98,35 +98,28 @@
       padding-bottom: 10px;
       padding-left: 5px;
       height: 30px;
+      border-radius: 3px;
       box-shadow: 0px 0px 0px 2px rgba(0, 0, 0, 0.3);
       position: absolute;
       z-index: 10;
       top: 40px;
-      right: 125px;
+      right: 117px;
     }
 
-    #map1button {
+    #myeasybar {
       box-shadow: 0px 0px 0px 2px rgba(0, 0, 0, 0.3);
-      position: fixed;
+      border: none;
+      border-radius: 3px;
       z-index: 10;
-      top: 150px;
-      right: 94px;
     }
 
-    #map2button {
-      box-shadow: 0px 0px 0px 2px rgba(0, 0, 0, 0.3);
-      position: fixed;
-      z-index: 10;
-      top: 150px;
-      right: 53px;
-    }
-
-    #infoButton {
-      box-shadow: 0px 0px 0px 2px rgba(0, 0, 0, 0.3);
-      position: fixed;
-      z-index: 10;
-      top: 150px;
-      right: 12px;
+    #myeasybar button {
+      width: 35px;
+      height: 30px;
+      display: inline-block;
+      border: none;
+      border-radius: 2px;
+      box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.3);
     }
 
     .legend {
@@ -138,7 +131,7 @@
       padding: 10px;
       position: absolute;
       right: 10px;
-      z-index: 1;
+      z-index: 20;
       line-height: 18px;
       color: #555;
     }
@@ -154,6 +147,7 @@
     .leaflet-control-layers-expanded {
       font-family: 'Rubik', sans-serif;
       font-size: 12px;
+      z-index: 21;
     }
   </style>
 </head>
@@ -165,7 +159,7 @@
   </header>
   <div id="map">
     <!-- maps title -->
-    <div id='info_text' class='px12 round wmax200'>
+    <div id='info_text' class='px12 wmax200'>
       <h5 class='txt-bold'>Maps:</h5>
     </div>
     <!-- end maps title -->
@@ -207,39 +201,39 @@
   <!-- end info -->
 
   <!-- pearson information window -->
-<div id='pearsoninfo' class='py6 px12 bg-gray-faint border border--gray-light round bottom left absolute wmax200 none'>
-  <h2 class='txt-bold'><span></span></h2>
-  <div class='grid'>
-    <nav class='col3'>
-      <h6 class='Head'> <span class='txt-bold'></span></h6>
-      <p class='consumer'> <svg class='icon inline-block' style='color: #ff0000'>
-          <use xlink:href='#icon-circle' /></svg> <span class='txt-s'></span> </p>
-      <p class='education'> <svg class='icon inline-block' style='color: #ff7700'>
-          <use xlink:href='#icon-circle' /></svg> <span class='txt-s'></span> </p>
-      <p class='employment'> <svg class='icon inline-block' style='color: #ffff00'>
-          <use xlink:href='#icon-circle' /></svg> <span class='txt-s'></span> </p>
-      <p class='family'> <svg class='icon inline-block' style='color: #77ff00'>
-          <use xlink:href='#icon-circle' /></svg> <span class='txt-s'></span> </p>
-      <p class='minors'> <svg class='icon inline-block' style='color: #00ffff'>
-          <use xlink:href='#icon-circle' /></svg> <span class='txt-s'></span> </p>
-      <p class='health'> <svg class='icon inline-block' style='color: #0000ff'>
-          <use xlink:href='#icon-circle' /></svg> <span class='txt-s'></span> </p>
-      <p class='housing'> <svg class='icon inline-block' style='color: #7700ff'>
-          <use xlink:href='#icon-circle' /></svg> <span class='txt-s'></span> </p>
-      <p class='benefits'> <svg class='icon inline-block' style='color: #ff00ff'>
-          <use xlink:href='#icon-circle' /></svg> <span class='txt-s'></span> </p>
-      <p class='individual'> <svg class='icon inline-block' style='color: #ff0077'>
-          <use xlink:href='#icon-circle' /></svg> <span class='txt-s'></span> </p>
-      <p class='miscellaneous'> <svg class='icon inline-block' style='color: #C0C0C0'>
-          <use xlink:href='#icon-circle' /></svg> <span class='txt-s'></span> </p>
-    </nav>
-    <div class='col6 flex-parent flex-parent--center-cross'>
-      <p class='mb6 flex-child'><span class='pearsonspark'></span></p>
+  <div id='pearsoninfo' class='py6 px12 bg-gray-faint border border--gray-light round bottom left absolute wmax200 none'>
+    <h2 class='txt-bold'><span></span></h2>
+    <div class='grid'>
+      <nav class='col3'>
+        <h6 class='Head'> <span class='txt-bold'></span></h6>
+        <p class='consumer'> <svg class='icon inline-block' style='color: #ff0000'>
+            <use xlink:href='#icon-circle' /></svg> <span class='txt-s'></span> </p>
+        <p class='education'> <svg class='icon inline-block' style='color: #ff7700'>
+            <use xlink:href='#icon-circle' /></svg> <span class='txt-s'></span> </p>
+        <p class='employment'> <svg class='icon inline-block' style='color: #ffff00'>
+            <use xlink:href='#icon-circle' /></svg> <span class='txt-s'></span> </p>
+        <p class='family'> <svg class='icon inline-block' style='color: #77ff00'>
+            <use xlink:href='#icon-circle' /></svg> <span class='txt-s'></span> </p>
+        <p class='minors'> <svg class='icon inline-block' style='color: #00ffff'>
+            <use xlink:href='#icon-circle' /></svg> <span class='txt-s'></span> </p>
+        <p class='health'> <svg class='icon inline-block' style='color: #0000ff'>
+            <use xlink:href='#icon-circle' /></svg> <span class='txt-s'></span> </p>
+        <p class='housing'> <svg class='icon inline-block' style='color: #7700ff'>
+            <use xlink:href='#icon-circle' /></svg> <span class='txt-s'></span> </p>
+        <p class='benefits'> <svg class='icon inline-block' style='color: #ff00ff'>
+            <use xlink:href='#icon-circle' /></svg> <span class='txt-s'></span> </p>
+        <p class='individual'> <svg class='icon inline-block' style='color: #ff0077'>
+            <use xlink:href='#icon-circle' /></svg> <span class='txt-s'></span> </p>
+        <p class='miscellaneous'> <svg class='icon inline-block' style='color: #C0C0C0'>
+            <use xlink:href='#icon-circle' /></svg> <span class='txt-s'></span> </p>
+      </nav>
+      <div class='col6 flex-parent flex-parent--center-cross'>
+        <p class='mb6 flex-child'><span class='pearsonspark'></span></p>
+      </div>
     </div>
+    <!-- end grid -->
   </div>
-  <!-- end grid -->
-</div>
-<!-- end pearsoninfo -->
+  <!-- end pearsoninfo -->
 
   <!-- button-dependent info window -->
   <div id="dialog" title="ILA calls by legal category">
@@ -290,7 +284,7 @@
     L.tileLayer('https://{s}.tile.openstreetmap.se/hydda/full/{z}/{x}/{y}.png', {
       maxZoom: 16,
       minZoom: 7,
-    	attribution: 'Tiles courtesy of <a href="http://openstreetmap.se/" target="_blank">OpenStreetMap Sweden</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      attribution: 'Tiles courtesy of <a href="http://openstreetmap.se/" target="_blank">OpenStreetMap Sweden</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
     /*
@@ -1668,7 +1662,7 @@
     });
 
     var mapsTitle = L.control({
-      position: 'topright' //place the maps window at top left corner
+      position: 'topright' //place the maps window at top right corner
     });
 
     //when added to the map
@@ -1684,7 +1678,7 @@
 
     var map1button = L.easyButton({
       id: 'map1button',
-      //position: 'topright',
+      position: 'topright',
       states: [{
         stateName: 'change-map',
         icon: '<strong>1</strong>',
@@ -1695,11 +1689,11 @@
       }]
     });
 
-    map1button.addTo(map);
+    //map1button.addTo(map);
 
     var map2button = L.easyButton({
       id: 'map2button',
-      //position: 'topleft',
+      position: 'topright',
       states: [{
         stateName: 'change-map',
         icon: '<strong>2</strong>',
@@ -1710,11 +1704,11 @@
       }]
     });
 
-    map2button.addTo(map);
+    //map2button.addTo(map);
 
     var infoButton = L.easyButton({
       id: 'infoButton',
-      //position: 'topleft',
+      position: 'topright',
       states: [{
         stateName: 'show-info',
         icon: '<strong>?</strong>',
@@ -1725,7 +1719,16 @@
       }]
     });
 
-    infoButton.addTo(map);
+    //infoButton.addTo(map);
+
+    // add the buttons to an array
+    var buttons = [map1button, map2button, infoButton];
+
+    // build a toolbar with them
+    L.easyBar(buttons, {
+      id: 'myeasybar',
+      position: 'topright',
+    }).addTo(map);
 
     // create legends for layers
     var consumerLegend = L.control({
@@ -2109,196 +2112,213 @@
       // Switch to the consumer protection legend
       if (eventLayer.name === '% of Calls for Consumer Protection') {
         this.removeControl(educationLegend).removeControl(employLegend)
-            .removeControl(famLegend).removeControl(minorLegend)
-            .removeControl(healthLegend).removeControl(housingLegend)
-            .removeControl(benefitsLegend).removeControl(individualLegend)
-            .removeControl(miscLegend).removeControl(fampovLegend)
-            .removeControl(giniLegend).removeControl(rentLegend)
-            .removeControl(vetLegend).removeControl(foreignLegend)
-            .removeControl(uninsuredLegend).removeControl(singleLegend);
+          .removeControl(famLegend).removeControl(minorLegend)
+          .removeControl(healthLegend).removeControl(housingLegend)
+          .removeControl(benefitsLegend).removeControl(individualLegend)
+          .removeControl(miscLegend).removeControl(fampovLegend)
+          .removeControl(giniLegend).removeControl(rentLegend)
+          .removeControl(vetLegend).removeControl(foreignLegend)
+          .removeControl(uninsuredLegend).removeControl(singleLegend);
         consumerLegend.addTo(this);
         // Switch to the education legend
       }
       if (eventLayer.name === '% of Calls for Education') {
         this.removeControl(consumerLegend).removeControl(employLegend)
-            .removeControl(famLegend).removeControl(minorLegend)
-            .removeControl(healthLegend).removeControl(housingLegend)
-            .removeControl(benefitsLegend).removeControl(individualLegend)
-            .removeControl(miscLegend).removeControl(fampovLegend)
-            .removeControl(giniLegend).removeControl(rentLegend)
-            .removeControl(vetLegend).removeControl(foreignLegend)
-            .removeControl(uninsuredLegend).removeControl(singleLegend);
+          .removeControl(famLegend).removeControl(minorLegend)
+          .removeControl(healthLegend).removeControl(housingLegend)
+          .removeControl(benefitsLegend).removeControl(individualLegend)
+          .removeControl(miscLegend).removeControl(fampovLegend)
+          .removeControl(giniLegend).removeControl(rentLegend)
+          .removeControl(vetLegend).removeControl(foreignLegend)
+          .removeControl(uninsuredLegend).removeControl(singleLegend);
         educationLegend.addTo(this);
-      } if (eventLayer.name === '% of Calls for Employment/Tax') {
+      }
+      if (eventLayer.name === '% of Calls for Employment/Tax') {
         this.removeControl(consumerLegend).removeControl(educationLegend)
-            .removeControl(famLegend).removeControl(minorLegend)
-            .removeControl(healthLegend).removeControl(housingLegend)
-            .removeControl(benefitsLegend).removeControl(individualLegend)
-            .removeControl(miscLegend).removeControl(fampovLegend)
-            .removeControl(giniLegend).removeControl(rentLegend)
-            .removeControl(vetLegend).removeControl(foreignLegend)
-            .removeControl(uninsuredLegend).removeControl(singleLegend);
+          .removeControl(famLegend).removeControl(minorLegend)
+          .removeControl(healthLegend).removeControl(housingLegend)
+          .removeControl(benefitsLegend).removeControl(individualLegend)
+          .removeControl(miscLegend).removeControl(fampovLegend)
+          .removeControl(giniLegend).removeControl(rentLegend)
+          .removeControl(vetLegend).removeControl(foreignLegend)
+          .removeControl(uninsuredLegend).removeControl(singleLegend);
         employLegend.addTo(this);
-      } if (eventLayer.name === '% of Calls for Family') {
+      }
+      if (eventLayer.name === '% of Calls for Family') {
         this.removeControl(consumerLegend).removeControl(employLegend)
-            .removeControl(educationLegend).removeControl(minorLegend)
-            .removeControl(healthLegend).removeControl(housingLegend)
-            .removeControl(benefitsLegend).removeControl(individualLegend)
-            .removeControl(miscLegend).removeControl(fampovLegend)
-            .removeControl(giniLegend).removeControl(rentLegend)
-            .removeControl(vetLegend).removeControl(foreignLegend)
-            .removeControl(uninsuredLegend).removeControl(singleLegend);
+          .removeControl(educationLegend).removeControl(minorLegend)
+          .removeControl(healthLegend).removeControl(housingLegend)
+          .removeControl(benefitsLegend).removeControl(individualLegend)
+          .removeControl(miscLegend).removeControl(fampovLegend)
+          .removeControl(giniLegend).removeControl(rentLegend)
+          .removeControl(vetLegend).removeControl(foreignLegend)
+          .removeControl(uninsuredLegend).removeControl(singleLegend);
         famLegend.addTo(this);
-      } if (eventLayer.name === '% of Calls for Minors') {
+      }
+      if (eventLayer.name === '% of Calls for Minors') {
         this.removeControl(consumerLegend).removeControl(employLegend)
-            .removeControl(educationLegend).removeControl(famLegend)
-            .removeControl(healthLegend).removeControl(housingLegend)
-            .removeControl(benefitsLegend).removeControl(individualLegend)
-            .removeControl(miscLegend).removeControl(fampovLegend)
-            .removeControl(giniLegend).removeControl(rentLegend)
-            .removeControl(vetLegend).removeControl(foreignLegend)
-            .removeControl(uninsuredLegend).removeControl(singleLegend);
+          .removeControl(educationLegend).removeControl(famLegend)
+          .removeControl(healthLegend).removeControl(housingLegend)
+          .removeControl(benefitsLegend).removeControl(individualLegend)
+          .removeControl(miscLegend).removeControl(fampovLegend)
+          .removeControl(giniLegend).removeControl(rentLegend)
+          .removeControl(vetLegend).removeControl(foreignLegend)
+          .removeControl(uninsuredLegend).removeControl(singleLegend);
         minorLegend.addTo(this);
-      }  if (eventLayer.name === '% of Calls for Health') {
+      }
+      if (eventLayer.name === '% of Calls for Health') {
         this.removeControl(consumerLegend).removeControl(employLegend)
-            .removeControl(educationLegend).removeControl(famLegend)
-            .removeControl(minorLegend).removeControl(housingLegend)
-            .removeControl(benefitsLegend).removeControl(individualLegend)
-            .removeControl(miscLegend).removeControl(fampovLegend)
-            .removeControl(giniLegend).removeControl(rentLegend)
-            .removeControl(vetLegend).removeControl(foreignLegend)
-            .removeControl(uninsuredLegend).removeControl(singleLegend);
+          .removeControl(educationLegend).removeControl(famLegend)
+          .removeControl(minorLegend).removeControl(housingLegend)
+          .removeControl(benefitsLegend).removeControl(individualLegend)
+          .removeControl(miscLegend).removeControl(fampovLegend)
+          .removeControl(giniLegend).removeControl(rentLegend)
+          .removeControl(vetLegend).removeControl(foreignLegend)
+          .removeControl(uninsuredLegend).removeControl(singleLegend);
         healthLegend.addTo(this);
-      } if (eventLayer.name === '% of Calls for Housing') {
+      }
+      if (eventLayer.name === '% of Calls for Housing') {
         this.removeControl(consumerLegend).removeControl(employLegend)
-            .removeControl(educationLegend).removeControl(famLegend)
-            .removeControl(minorLegend).removeControl(healthLegend)
-            .removeControl(benefitsLegend).removeControl(individualLegend)
-            .removeControl(miscLegend).removeControl(fampovLegend)
-            .removeControl(giniLegend).removeControl(rentLegend)
-            .removeControl(vetLegend).removeControl(foreignLegend)
-            .removeControl(uninsuredLegend).removeControl(singleLegend);
+          .removeControl(educationLegend).removeControl(famLegend)
+          .removeControl(minorLegend).removeControl(healthLegend)
+          .removeControl(benefitsLegend).removeControl(individualLegend)
+          .removeControl(miscLegend).removeControl(fampovLegend)
+          .removeControl(giniLegend).removeControl(rentLegend)
+          .removeControl(vetLegend).removeControl(foreignLegend)
+          .removeControl(uninsuredLegend).removeControl(singleLegend);
         housingLegend.addTo(this);
-      } if (eventLayer.name === '% of Calls for Benefits') {
+      }
+      if (eventLayer.name === '% of Calls for Benefits') {
         this.removeControl(consumerLegend).removeControl(employLegend)
-            .removeControl(educationLegend).removeControl(famLegend)
-            .removeControl(minorLegend).removeControl(healthLegend)
-            .removeControl(housingLegend).removeControl(individualLegend)
-            .removeControl(miscLegend).removeControl(fampovLegend)
-            .removeControl(giniLegend).removeControl(rentLegend)
-            .removeControl(vetLegend).removeControl(foreignLegend)
-            .removeControl(uninsuredLegend).removeControl(singleLegend);
+          .removeControl(educationLegend).removeControl(famLegend)
+          .removeControl(minorLegend).removeControl(healthLegend)
+          .removeControl(housingLegend).removeControl(individualLegend)
+          .removeControl(miscLegend).removeControl(fampovLegend)
+          .removeControl(giniLegend).removeControl(rentLegend)
+          .removeControl(vetLegend).removeControl(foreignLegend)
+          .removeControl(uninsuredLegend).removeControl(singleLegend);
         benefitsLegend.addTo(this);
-      } if (eventLayer.name === '% of Calls for Individual Rights') {
+      }
+      if (eventLayer.name === '% of Calls for Individual Rights') {
         this.removeControl(consumerLegend).removeControl(employLegend)
-            .removeControl(educationLegend).removeControl(famLegend)
-            .removeControl(minorLegend).removeControl(healthLegend)
-            .removeControl(housingLegend).removeControl(benefitsLegend)
-            .removeControl(miscLegend).removeControl(fampovLegend)
-            .removeControl(giniLegend).removeControl(rentLegend)
-            .removeControl(vetLegend).removeControl(foreignLegend)
-            .removeControl(uninsuredLegend).removeControl(singleLegend);
+          .removeControl(educationLegend).removeControl(famLegend)
+          .removeControl(minorLegend).removeControl(healthLegend)
+          .removeControl(housingLegend).removeControl(benefitsLegend)
+          .removeControl(miscLegend).removeControl(fampovLegend)
+          .removeControl(giniLegend).removeControl(rentLegend)
+          .removeControl(vetLegend).removeControl(foreignLegend)
+          .removeControl(uninsuredLegend).removeControl(singleLegend);
         individualLegend.addTo(this);
-      } if (eventLayer.name === '% of Calls for Miscellaneous/Other') {
+      }
+      if (eventLayer.name === '% of Calls for Miscellaneous/Other') {
         this.removeControl(consumerLegend).removeControl(employLegend)
-            .removeControl(educationLegend).removeControl(famLegend)
-            .removeControl(minorLegend).removeControl(healthLegend)
-            .removeControl(housingLegend).removeControl(benefitsLegend)
-            .removeControl(individualLegend).removeControl(fampovLegend)
-            .removeControl(giniLegend).removeControl(rentLegend)
-            .removeControl(vetLegend).removeControl(foreignLegend)
-            .removeControl(uninsuredLegend).removeControl(singleLegend);
+          .removeControl(educationLegend).removeControl(famLegend)
+          .removeControl(minorLegend).removeControl(healthLegend)
+          .removeControl(housingLegend).removeControl(benefitsLegend)
+          .removeControl(individualLegend).removeControl(fampovLegend)
+          .removeControl(giniLegend).removeControl(rentLegend)
+          .removeControl(vetLegend).removeControl(foreignLegend)
+          .removeControl(uninsuredLegend).removeControl(singleLegend);
         miscLegend.addTo(this);
-      } if (eventLayer.name === '% of Families in Poverty') {
+      }
+      if (eventLayer.name === '% of Families in Poverty') {
         this.removeControl(consumerLegend).removeControl(employLegend)
-            .removeControl(educationLegend).removeControl(famLegend)
-            .removeControl(minorLegend).removeControl(healthLegend)
-            .removeControl(housingLegend).removeControl(benefitsLegend)
-            .removeControl(individualLegend).removeControl(miscLegend)
-            .removeControl(giniLegend).removeControl(rentLegend)
-            .removeControl(vetLegend).removeControl(foreignLegend)
-            .removeControl(uninsuredLegend).removeControl(singleLegend);
+          .removeControl(educationLegend).removeControl(famLegend)
+          .removeControl(minorLegend).removeControl(healthLegend)
+          .removeControl(housingLegend).removeControl(benefitsLegend)
+          .removeControl(individualLegend).removeControl(miscLegend)
+          .removeControl(giniLegend).removeControl(rentLegend)
+          .removeControl(vetLegend).removeControl(foreignLegend)
+          .removeControl(uninsuredLegend).removeControl(singleLegend);
         fampovLegend.addTo(this);
-      } if (eventLayer.name === 'Gini Coefficient') {
+      }
+      if (eventLayer.name === 'Gini Coefficient') {
         this.removeControl(consumerLegend).removeControl(employLegend)
-            .removeControl(educationLegend).removeControl(famLegend)
-            .removeControl(minorLegend).removeControl(healthLegend)
-            .removeControl(housingLegend).removeControl(benefitsLegend)
-            .removeControl(individualLegend).removeControl(miscLegend)
-            .removeControl(fampovLegend).removeControl(rentLegend)
-            .removeControl(vetLegend).removeControl(foreignLegend)
-            .removeControl(uninsuredLegend).removeControl(singleLegend);
+          .removeControl(educationLegend).removeControl(famLegend)
+          .removeControl(minorLegend).removeControl(healthLegend)
+          .removeControl(housingLegend).removeControl(benefitsLegend)
+          .removeControl(individualLegend).removeControl(miscLegend)
+          .removeControl(fampovLegend).removeControl(rentLegend)
+          .removeControl(vetLegend).removeControl(foreignLegend)
+          .removeControl(uninsuredLegend).removeControl(singleLegend);
         giniLegend.addTo(this);
-      } if (eventLayer.name === '% Households w/ Rent > 50% of Income') {
+      }
+      if (eventLayer.name === '% Households w/ Rent > 50% of Income') {
         this.removeControl(consumerLegend).removeControl(employLegend)
-            .removeControl(educationLegend).removeControl(famLegend)
-            .removeControl(minorLegend).removeControl(healthLegend)
-            .removeControl(housingLegend).removeControl(benefitsLegend)
-            .removeControl(individualLegend).removeControl(miscLegend)
-            .removeControl(fampovLegend).removeControl(giniLegend)
-            .removeControl(vetLegend).removeControl(foreignLegend)
-            .removeControl(uninsuredLegend).removeControl(singleLegend);
+          .removeControl(educationLegend).removeControl(famLegend)
+          .removeControl(minorLegend).removeControl(healthLegend)
+          .removeControl(housingLegend).removeControl(benefitsLegend)
+          .removeControl(individualLegend).removeControl(miscLegend)
+          .removeControl(fampovLegend).removeControl(giniLegend)
+          .removeControl(vetLegend).removeControl(foreignLegend)
+          .removeControl(uninsuredLegend).removeControl(singleLegend);
         rentLegend.addTo(this);
-      } if (eventLayer.name === '% of Adults who are Veterans') {
+      }
+      if (eventLayer.name === '% of Adults who are Veterans') {
         this.removeControl(consumerLegend).removeControl(employLegend)
-            .removeControl(educationLegend).removeControl(famLegend)
-            .removeControl(minorLegend).removeControl(healthLegend)
-            .removeControl(housingLegend).removeControl(benefitsLegend)
-            .removeControl(individualLegend).removeControl(miscLegend)
-            .removeControl(fampovLegend).removeControl(giniLegend)
-            .removeControl(rentLegend).removeControl(foreignLegend)
-            .removeControl(uninsuredLegend).removeControl(singleLegend);
+          .removeControl(educationLegend).removeControl(famLegend)
+          .removeControl(minorLegend).removeControl(healthLegend)
+          .removeControl(housingLegend).removeControl(benefitsLegend)
+          .removeControl(individualLegend).removeControl(miscLegend)
+          .removeControl(fampovLegend).removeControl(giniLegend)
+          .removeControl(rentLegend).removeControl(foreignLegend)
+          .removeControl(uninsuredLegend).removeControl(singleLegend);
         vetLegend.addTo(this);
-      } if (eventLayer.name === '% Foreign Born') {
+      }
+      if (eventLayer.name === '% Foreign Born') {
         this.removeControl(consumerLegend).removeControl(employLegend)
-            .removeControl(educationLegend).removeControl(famLegend)
-            .removeControl(minorLegend).removeControl(healthLegend)
-            .removeControl(housingLegend).removeControl(benefitsLegend)
-            .removeControl(individualLegend).removeControl(miscLegend)
-            .removeControl(fampovLegend).removeControl(giniLegend)
-            .removeControl(rentLegend).removeControl(vetLegend)
-            .removeControl(uninsuredLegend).removeControl(singleLegend);
+          .removeControl(educationLegend).removeControl(famLegend)
+          .removeControl(minorLegend).removeControl(healthLegend)
+          .removeControl(housingLegend).removeControl(benefitsLegend)
+          .removeControl(individualLegend).removeControl(miscLegend)
+          .removeControl(fampovLegend).removeControl(giniLegend)
+          .removeControl(rentLegend).removeControl(vetLegend)
+          .removeControl(uninsuredLegend).removeControl(singleLegend);
         foreignLegend.addTo(this);
-      } if (eventLayer.name === '% Without Health Insurance') {
+      }
+      if (eventLayer.name === '% Without Health Insurance') {
         this.removeControl(consumerLegend).removeControl(employLegend)
-            .removeControl(educationLegend).removeControl(famLegend)
-            .removeControl(minorLegend).removeControl(healthLegend)
-            .removeControl(housingLegend).removeControl(benefitsLegend)
-            .removeControl(individualLegend).removeControl(miscLegend)
-            .removeControl(fampovLegend).removeControl(giniLegend)
-            .removeControl(rentLegend).removeControl(vetLegend)
-            .removeControl(foreignLegend).removeControl(singleLegend);
+          .removeControl(educationLegend).removeControl(famLegend)
+          .removeControl(minorLegend).removeControl(healthLegend)
+          .removeControl(housingLegend).removeControl(benefitsLegend)
+          .removeControl(individualLegend).removeControl(miscLegend)
+          .removeControl(fampovLegend).removeControl(giniLegend)
+          .removeControl(rentLegend).removeControl(vetLegend)
+          .removeControl(foreignLegend).removeControl(singleLegend);
         uninsuredLegend.addTo(this);
-      } if (eventLayer.name === '% of Children in Single-Parent Homes') {
+      }
+      if (eventLayer.name === '% of Children in Single-Parent Homes') {
         this.removeControl(consumerLegend).removeControl(employLegend)
-            .removeControl(educationLegend).removeControl(famLegend)
-            .removeControl(minorLegend).removeControl(healthLegend)
-            .removeControl(housingLegend).removeControl(benefitsLegend)
-            .removeControl(individualLegend).removeControl(miscLegend)
-            .removeControl(fampovLegend).removeControl(giniLegend)
-            .removeControl(rentLegend).removeControl(vetLegend)
-            .removeControl(foreignLegend).removeControl(uninsuredLegend);
+          .removeControl(educationLegend).removeControl(famLegend)
+          .removeControl(minorLegend).removeControl(healthLegend)
+          .removeControl(housingLegend).removeControl(benefitsLegend)
+          .removeControl(individualLegend).removeControl(miscLegend)
+          .removeControl(fampovLegend).removeControl(giniLegend)
+          .removeControl(rentLegend).removeControl(vetLegend)
+          .removeControl(foreignLegend).removeControl(uninsuredLegend);
         singleLegend.addTo(this);
-      } if (eventLayer.name === 'Turn Off ILA Call Layers') {
+      }
+      if (eventLayer.name === 'Turn Off ILA Call Layers') {
         this.removeControl(consumerLegend).removeControl(employLegend)
-            .removeControl(educationLegend).removeControl(famLegend)
-            .removeControl(minorLegend).removeControl(healthLegend)
-            .removeControl(housingLegend).removeControl(benefitsLegend)
-            .removeControl(individualLegend).removeControl(miscLegend)
-            .removeControl(fampovLegend).removeControl(giniLegend)
-            .removeControl(rentLegend).removeControl(vetLegend)
-            .removeControl(foreignLegend).removeControl(singleLegend)
-            .removeControl(uninsuredLegend);
-      } if (eventLayer.name === 'Turn Off ACS Layers') {
+          .removeControl(educationLegend).removeControl(famLegend)
+          .removeControl(minorLegend).removeControl(healthLegend)
+          .removeControl(housingLegend).removeControl(benefitsLegend)
+          .removeControl(individualLegend).removeControl(miscLegend)
+          .removeControl(fampovLegend).removeControl(giniLegend)
+          .removeControl(rentLegend).removeControl(vetLegend)
+          .removeControl(foreignLegend).removeControl(singleLegend)
+          .removeControl(uninsuredLegend);
+      }
+      if (eventLayer.name === 'Turn Off ACS Layers') {
         this.removeControl(consumerLegend).removeControl(employLegend)
-            .removeControl(educationLegend).removeControl(famLegend)
-            .removeControl(minorLegend).removeControl(healthLegend)
-            .removeControl(housingLegend).removeControl(benefitsLegend)
-            .removeControl(individualLegend).removeControl(miscLegend)
-            .removeControl(fampovLegend).removeControl(giniLegend)
-            .removeControl(rentLegend).removeControl(vetLegend)
-            .removeControl(foreignLegend).removeControl(singleLegend)
-            .removeControl(uninsuredLegend);
+          .removeControl(educationLegend).removeControl(famLegend)
+          .removeControl(minorLegend).removeControl(healthLegend)
+          .removeControl(housingLegend).removeControl(benefitsLegend)
+          .removeControl(individualLegend).removeControl(miscLegend)
+          .removeControl(fampovLegend).removeControl(giniLegend)
+          .removeControl(rentLegend).removeControl(vetLegend)
+          .removeControl(foreignLegend).removeControl(singleLegend)
+          .removeControl(uninsuredLegend);
       }
     });
 
@@ -2319,53 +2339,53 @@
         var singleArray = [];
 
         famArray.push(data[0].Families_Below_Poverty_Perc, data[1].Families_Below_Poverty_Perc,
-                       data[2].Families_Below_Poverty_Perc, data[3].Families_Below_Poverty_Perc,
-                       data[4].Families_Below_Poverty_Perc, data[5].Families_Below_Poverty_Perc,
-                       data[6].Families_Below_Poverty_Perc, data[7].Families_Below_Poverty_Perc,
-                       data[8].Families_Below_Poverty_Perc, data[9].Families_Below_Poverty_Perc
-                      );
+          data[2].Families_Below_Poverty_Perc, data[3].Families_Below_Poverty_Perc,
+          data[4].Families_Below_Poverty_Perc, data[5].Families_Below_Poverty_Perc,
+          data[6].Families_Below_Poverty_Perc, data[7].Families_Below_Poverty_Perc,
+          data[8].Families_Below_Poverty_Perc, data[9].Families_Below_Poverty_Perc
+        );
 
         giniArray.push(data[0].Gini_Index, data[1].Gini_Index,
-                       data[2].Gini_Index, data[3].Gini_Index,
-                       data[4].Gini_Index, data[5].Gini_Index,
-                       data[6].Gini_Index, data[7].Gini_Index,
-                       data[8].Gini_Index, data[9].Gini_Index
-                      );
+          data[2].Gini_Index, data[3].Gini_Index,
+          data[4].Gini_Index, data[5].Gini_Index,
+          data[6].Gini_Index, data[7].Gini_Index,
+          data[8].Gini_Index, data[9].Gini_Index
+        );
 
         rentArray.push(data[0].Perc_Households_Rent_50Perc_Income, data[1].Perc_Households_Rent_50Perc_Income,
-                       data[2].Perc_Households_Rent_50Perc_Income, data[3].Perc_Households_Rent_50Perc_Income,
-                       data[4].Perc_Households_Rent_50Perc_Income, data[5].Perc_Households_Rent_50Perc_Income,
-                       data[6].Perc_Households_Rent_50Perc_Income, data[7].Perc_Households_Rent_50Perc_Income,
-                       data[8].Perc_Households_Rent_50Perc_Income, data[9].Perc_Households_Rent_50Perc_Income
-                     );
+          data[2].Perc_Households_Rent_50Perc_Income, data[3].Perc_Households_Rent_50Perc_Income,
+          data[4].Perc_Households_Rent_50Perc_Income, data[5].Perc_Households_Rent_50Perc_Income,
+          data[6].Perc_Households_Rent_50Perc_Income, data[7].Perc_Households_Rent_50Perc_Income,
+          data[8].Perc_Households_Rent_50Perc_Income, data[9].Perc_Households_Rent_50Perc_Income
+        );
 
         vetArray.push(data[0].Perc_Veteran, data[1].Perc_Veteran,
-                       data[2].Perc_Veteran, data[3].Perc_Veteran,
-                       data[4].Perc_Veteran, data[5].Perc_Veteran,
-                       data[6].Perc_Veteran, data[7].Perc_Veteran,
-                       data[8].Perc_Veteran, data[9].Perc_Veteran
-                      );
+          data[2].Perc_Veteran, data[3].Perc_Veteran,
+          data[4].Perc_Veteran, data[5].Perc_Veteran,
+          data[6].Perc_Veteran, data[7].Perc_Veteran,
+          data[8].Perc_Veteran, data[9].Perc_Veteran
+        );
 
         foreignArray.push(data[0].Perc_Foreign_Born, data[1].Perc_Foreign_Born,
-                       data[2].Perc_Foreign_Born, data[3].Perc_Foreign_Born,
-                       data[4].Perc_Foreign_Born, data[5].Perc_Foreign_Born,
-                       data[6].Perc_Foreign_Born, data[7].Perc_Foreign_Born,
-                       data[8].Perc_Foreign_Born, data[9].Perc_Foreign_Born
-                      );
+          data[2].Perc_Foreign_Born, data[3].Perc_Foreign_Born,
+          data[4].Perc_Foreign_Born, data[5].Perc_Foreign_Born,
+          data[6].Perc_Foreign_Born, data[7].Perc_Foreign_Born,
+          data[8].Perc_Foreign_Born, data[9].Perc_Foreign_Born
+        );
 
         uninsuredArray.push(data[0].Perc_Uninsured, data[1].Perc_Uninsured,
-                       data[2].Perc_Uninsured, data[3].Perc_Uninsured,
-                       data[4].Perc_Uninsured, data[5].Perc_Uninsured,
-                       data[6].Perc_Uninsured, data[7].Perc_Uninsured,
-                       data[8].Perc_Uninsured, data[9].Perc_Uninsured
-                      );
+          data[2].Perc_Uninsured, data[3].Perc_Uninsured,
+          data[4].Perc_Uninsured, data[5].Perc_Uninsured,
+          data[6].Perc_Uninsured, data[7].Perc_Uninsured,
+          data[8].Perc_Uninsured, data[9].Perc_Uninsured
+        );
 
         singleArray.push(data[0].Perc_Children_Single_Parents, data[1].Perc_Children_Single_Parents,
-                       data[2].Perc_Children_Single_Parents, data[3].Perc_Children_Single_Parents,
-                       data[4].Perc_Children_Single_Parents, data[5].Perc_Children_Single_Parents,
-                       data[6].Perc_Children_Single_Parents, data[7].Perc_Children_Single_Parents,
-                       data[8].Perc_Children_Single_Parents, data[9].Perc_Children_Single_Parents
-                      );
+          data[2].Perc_Children_Single_Parents, data[3].Perc_Children_Single_Parents,
+          data[4].Perc_Children_Single_Parents, data[5].Perc_Children_Single_Parents,
+          data[6].Perc_Children_Single_Parents, data[7].Perc_Children_Single_Parents,
+          data[8].Perc_Children_Single_Parents, data[9].Perc_Children_Single_Parents
+        );
         // when the user changes the baselayer, switch the legend
         map.on('overlayadd', function(eventLayer) {
 
@@ -2397,7 +2417,8 @@
               colorMap: ['#ff0000', '#ff7700', '#ffff00', '#77ff00', '#00ffff', '#0000ff', '#7700ff', '#ff00ff', '#ff0077', '#C0C0C0'],
             });
 
-          } if (eventLayer.name === 'Gini Coefficient') {
+          }
+          if (eventLayer.name === 'Gini Coefficient') {
 
             // hide the info window by adding back the 'none' class
             $('#pearsoninfo').addClass('none').show
@@ -2425,7 +2446,8 @@
               colorMap: ['#ff0000', '#ff7700', '#ffff00', '#77ff00', '#00ffff', '#0000ff', '#7700ff', '#ff00ff', '#ff0077', '#C0C0C0'],
             });
 
-          } if (eventLayer.name === '% Households w/ Rent > 50% of Income') {
+          }
+          if (eventLayer.name === '% Households w/ Rent > 50% of Income') {
 
             // hide the info window by adding back the 'none' class
             $('#pearsoninfo').addClass('none').show
@@ -2453,7 +2475,8 @@
               colorMap: ['#ff0000', '#ff7700', '#ffff00', '#77ff00', '#00ffff', '#0000ff', '#7700ff', '#ff00ff', '#ff0077', '#C0C0C0'],
             });
 
-          } if (eventLayer.name === '% of Adults who are Veterans') {
+          }
+          if (eventLayer.name === '% of Adults who are Veterans') {
 
             // hide the info window by adding back the 'none' class
             $('#pearsoninfo').addClass('none').show
@@ -2481,7 +2504,8 @@
               colorMap: ['#ff0000', '#ff7700', '#ffff00', '#77ff00', '#00ffff', '#0000ff', '#7700ff', '#ff00ff', '#ff0077', '#C0C0C0'],
             });
 
-          } if (eventLayer.name === '% Foreign Born') {
+          }
+          if (eventLayer.name === '% Foreign Born') {
 
             // hide the info window by adding back the 'none' class
             $('#pearsoninfo').addClass('none').show
@@ -2509,7 +2533,8 @@
               colorMap: ['#ff0000', '#ff7700', '#ffff00', '#77ff00', '#00ffff', '#0000ff', '#7700ff', '#ff00ff', '#ff0077', '#C0C0C0'],
             });
 
-          } if (eventLayer.name === '% Without Health Insurance') {
+          }
+          if (eventLayer.name === '% Without Health Insurance') {
 
             // hide the info window by adding back the 'none' class
             $('#pearsoninfo').addClass('none').show
@@ -2537,7 +2562,8 @@
               colorMap: ['#ff0000', '#ff7700', '#ffff00', '#77ff00', '#00ffff', '#0000ff', '#7700ff', '#ff00ff', '#ff0077', '#C0C0C0'],
             });
 
-          } if (eventLayer.name === '% of Children in Single-Parent Homes') {
+          }
+          if (eventLayer.name === '% of Children in Single-Parent Homes') {
 
             // hide the info window by adding back the 'none' class
             $('#pearsoninfo').addClass('none').show
@@ -2565,62 +2591,74 @@
               colorMap: ['#ff0000', '#ff7700', '#ffff00', '#77ff00', '#00ffff', '#0000ff', '#7700ff', '#ff00ff', '#ff0077', '#C0C0C0'],
             });
 
-          } if (eventLayer.name === '% of Calls for Consumer Protection') {
+          }
+          if (eventLayer.name === '% of Calls for Consumer Protection') {
 
             // hide the info window by adding back the 'none' class
             $('#pearsoninfo').addClass('none').show
 
-          } if (eventLayer.name === '% of Calls for Education') {
+          }
+          if (eventLayer.name === '% of Calls for Education') {
 
             // hide the info window by adding back the 'none' class
             $('#pearsoninfo').addClass('none').show
 
-          } if (eventLayer.name === '% of Calls for Employment/Tax') {
+          }
+          if (eventLayer.name === '% of Calls for Employment/Tax') {
 
             // hide the info window by adding back the 'none' class
             $('#pearsoninfo').addClass('none').show
 
-          } if (eventLayer.name === '% of Calls for Family') {
+          }
+          if (eventLayer.name === '% of Calls for Family') {
 
             // hide the info window by adding back the 'none' class
             $('#pearsoninfo').addClass('none').show
 
-          } if (eventLayer.name === '% of Calls for Minors') {
+          }
+          if (eventLayer.name === '% of Calls for Minors') {
 
             // hide the info window by adding back the 'none' class
             $('#pearsoninfo').addClass('none').show
 
-          } if (eventLayer.name === '% of Calls for Health') {
+          }
+          if (eventLayer.name === '% of Calls for Health') {
 
             // hide the info window by adding back the 'none' class
             $('#pearsoninfo').addClass('none').show
 
-          } if (eventLayer.name === '% of Calls for Housing') {
+          }
+          if (eventLayer.name === '% of Calls for Housing') {
 
             // hide the info window by adding back the 'none' class
             $('#pearsoninfo').addClass('none').show
 
-          } if (eventLayer.name === '% of Calls for Benefits') {
+          }
+          if (eventLayer.name === '% of Calls for Benefits') {
 
             // hide the info window by adding back the 'none' class
             $('#pearsoninfo').addClass('none').show
 
-          } if (eventLayer.name === '% of Calls for Individual Rights') {
+          }
+          if (eventLayer.name === '% of Calls for Individual Rights') {
 
             // hide the info window by adding back the 'none' class
             $('#pearsoninfo').addClass('none').show
 
-          } if (eventLayer.name === '% of Calls for Miscellaneous/Other') {
+          }
+          if (eventLayer.name === '% of Calls for Miscellaneous/Other') {
 
             // hide the info window by adding back the 'none' class
             $('#pearsoninfo').addClass('none').show
 
-          } if (eventLayer.name === 'Turn Off ILA Call Layers') {
+          }
+          if (eventLayer.name === 'Turn Off ILA Call Layers') {
 
             // hide the info window by adding back the 'none' class
             $('#pearsoninfo').addClass('none').show
 
-          } if (eventLayer.name === 'Turn Off ACS Layers') {
+          }
+          if (eventLayer.name === 'Turn Off ACS Layers') {
 
             // hide the info window by adding back the 'none' class
             $('#pearsoninfo').addClass('none').show
@@ -2632,7 +2670,6 @@
       }
 
     });
-
   </script>
 </body>
 

@@ -92,35 +92,28 @@
       padding-bottom: 10px;
       padding-left: 5px;
       height: 30px;
+      border-radius: 3px;
       box-shadow: 0px 0px 0px 2px rgba(0, 0, 0, 0.3);
       position: absolute;
       z-index: 10;
-      top: 131px;
+      top: 132px;
       right: 133px;
     }
 
-    #map2button {
+    #myeasybar {
       box-shadow: 0px 0px 0px 2px rgba(0, 0, 0, 0.3);
-      position: fixed;
+      border: none;
+      border-radius: 3px;
       z-index: 10;
-      top: 241px;
-      right: 100px;
     }
 
-    #map3button {
-      box-shadow: 0px 0px 0px 2px rgba(0, 0, 0, 0.3);
-      position: fixed;
-      z-index: 10;
-      top: 241px;
-      right: 58px;
-    }
-
-    #infoButton {
-      box-shadow: 0px 0px 0px 2px rgba(0, 0, 0, 0.3);
-      position: fixed;
-      z-index: 10;
-      top: 241px;
-      right: 12px;
+    #myeasybar button {
+      width: 35px;
+      height: 30px;
+      display: inline-block;
+      border: none;
+      border-radius: 2px;
+      box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.3);
     }
 
     .leaflet-control-layers-expanded {
@@ -138,7 +131,7 @@
   <div id="map"></div>
 
   <!-- maps title -->
-  <div id='info_text' class='px12 round wmax200'>
+  <div id='info_text' class='px12 wmax200'>
     <h5 class='txt-bold'>Maps:</h5>
   </div>
   <!-- end maps title -->
@@ -252,9 +245,9 @@
             layer.setStyle({
               color: 'yellow',
               weight: 3,
-              opacity: 0.5,
+              opacity: 1,
               //smoothFactor: 0.99
-            }).bringToFront();
+            });
           });
           // reset style on mouseout
           layer.on("mouseout", function(e) {
@@ -534,7 +527,7 @@
 
       var map2button = L.easyButton({
         id: 'map2button',
-        //position: 'topleft',
+        position: 'topright',
         states: [{
           stateName: 'change-map',
           icon: '<strong>2</strong>',
@@ -545,11 +538,11 @@
         }]
       });
 
-      map2button.addTo(map);
+      //map2button.addTo(map);
 
       var map3button = L.easyButton({
         id: 'map3button',
-        //position: 'topleft',
+        position: 'topright',
         states: [{
           stateName: 'change-map',
           icon: '<strong>3</strong>',
@@ -560,11 +553,11 @@
         }]
       });
 
-      map3button.addTo(map);
+      //map3button.addTo(map);
 
       var infoButton = L.easyButton({
         id: 'infoButton',
-        //position: 'topleft',
+        position: 'topright',
         states: [{
           stateName: 'show-info',
           icon: '<strong>?</strong>',
@@ -575,7 +568,16 @@
         }]
       });
 
-      infoButton.addTo(map);
+      //infoButton.addTo(map);
+
+      // add the buttons to an array
+      var buttons = [map2button, map3button, infoButton];
+
+      // build a toolbar with them
+      L.easyBar(buttons, {
+        id: 'myeasybar',
+        position: 'topright',
+      }).addTo(map);
 
     }; // end drawMap function
   </script>
