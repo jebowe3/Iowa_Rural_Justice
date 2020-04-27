@@ -281,18 +281,27 @@
     // Initialize the map
     var map = L.map('map').setView([42.065, -93.500], 8);
 
+    // Replace Hydda basemap with CartoDB Positron
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+    	subdomains: 'abcd',
+    	maxZoom: 16,
+      minZoom: 7,
+    }).addTo(map);
+
+    /*
+    // Hydda basemap no longer works... is this temporary?
     L.tileLayer('https://{s}.tile.openstreetmap.se/hydda/full/{z}/{x}/{y}.png', {
       maxZoom: 16,
       minZoom: 7,
       attribution: 'Tiles courtesy of <a href="http://openstreetmap.se/" target="_blank">OpenStreetMap Sweden</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
-    /*
-        // fit map to Iowa
-        map.fitBounds([
-          [43.50102, -90.14006],
-          [40.37544, -96.63967]
-        ]);
+    // fit map to Iowa
+    map.fitBounds([
+      [43.50102, -90.14006],
+      [40.37544, -96.63967]
+    ]);
     */
 
     // add a scale bar
